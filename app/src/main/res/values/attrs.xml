@@ -1,0 +1,12 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="TabItem">
+        <attr name="tip" format="string"/>
+        <attr name="selectColor" format="color"/>
+        <attr name="unselectColor" format="color"/>
+        <attr name="selectIcon" format="reference"/>
+        <attr name="unselectIcon" format="reference"/>
+    </declare-styleable>
+
+</resources>
