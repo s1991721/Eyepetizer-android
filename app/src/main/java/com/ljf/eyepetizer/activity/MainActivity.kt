@@ -29,10 +29,7 @@ class MainActivity : BaseActivity() {
         findTab.setOnClickListener(onTabItemClickListener)
         hotTab.setOnClickListener(onTabItemClickListener)
         mineTab.setOnClickListener(onTabItemClickListener)
-    }
 
-    override fun onResume() {
-        super.onResume()
         val params: LinearLayout.LayoutParams? = LinearLayout.LayoutParams(0, MATCH_PARENT)
         params?.weight = 1f
         notifyTab = TabItem(this, NotifyFragment::class.java)
