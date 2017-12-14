@@ -4,7 +4,6 @@ import android.content.Intent
 import android.os.Bundle
 import com.ljf.eyepetizer.BaseActivity
 import com.ljf.eyepetizer.R
-import com.ljf.eyepetizer.views.TabItem
 import kotlinx.android.synthetic.main.activity_splash.*
 
 /**
@@ -21,7 +20,10 @@ class SplashActivity : BaseActivity() {
     }
 
     private fun goMain() {
-        textView.postDelayed({ startActivity(Intent(this, MainActivity::class.java)) }, 1000)
+        textView.postDelayed({
+            startActivity(Intent(this, MainActivity::class.java))
+            finish()
+        }, 1000)
     }
 
 }
