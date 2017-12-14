@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="utf-8"?>
 <LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:orientation="vertical">
@@ -10,11 +11,58 @@
         android:layout_height="0dp"
         android:layout_weight="1" />
 
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="0.5dp"
+        android:background="@color/gray" />
+
     <LinearLayout
         android:id="@+id/bt_ll"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:gravity="center"
-        android:orientation="horizontal"/>
+        android:orientation="horizontal">
+
+        <com.ljf.eyepetizer.views.TabItem
+            android:id="@+id/homeTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="com.ljf.eyepetizer.fragment.HomeFragment"
+            app:selectIcon="@mipmap/home_selected"
+            app:tip="@string/home"
+            app:unselectIcon="@mipmap/home_normal" />
+
+        <com.ljf.eyepetizer.views.TabItem
+            android:id="@+id/findTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="com.ljf.eyepetizer.fragment.FindFragment"
+            app:selectIcon="@mipmap/find_selected"
+            app:tip="@string/find"
+            app:unselectIcon="@mipmap/find_normal" />
+
+        <com.ljf.eyepetizer.views.TabItem
+            android:id="@+id/hotTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="com.ljf.eyepetizer.fragment.NotifyFragment"
+            app:selectIcon="@mipmap/hot_selected"
+            app:tip="@string/hot"
+            app:unselectIcon="@mipmap/hot_normal" />
+
+        <com.ljf.eyepetizer.views.TabItem
+            android:id="@+id/mineTab"
+            android:layout_width="0dp"
+            android:layout_height="match_parent"
+            android:layout_weight="1"
+            android:tag="com.ljf.eyepetizer.fragment.MineFragment"
+            app:selectIcon="@mipmap/mine_selected"
+            app:tip="@string/mine"
+            app:unselectIcon="@mipmap/mine_normal" />
+
+    </LinearLayout>
 
 </LinearLayout>
