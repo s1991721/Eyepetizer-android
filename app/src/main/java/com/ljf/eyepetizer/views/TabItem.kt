@@ -5,6 +5,7 @@ import android.graphics.Color
 import android.graphics.drawable.Drawable
 import android.support.v4.content.ContextCompat
 import android.util.AttributeSet
+import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.ljf.eyepetizer.BaseFragment
@@ -40,6 +41,10 @@ class TabItem<T : BaseFragment>(context: Context, attrs: AttributeSet?, defStyle
         selectIcon = typeArray?.getDrawable(R.styleable.TabItem_selectIcon)
         unselectIcon = typeArray?.getDrawable(R.styleable.TabItem_unselectIcon)
         typeArray?.recycle()
+
+        orientation = VERTICAL
+        gravity = Gravity.CENTER
+        setPadding(8, 8, 8, 8)
 
         if (fragmentClass != null) {
             tag = fragmentClass.name
