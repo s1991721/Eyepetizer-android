@@ -9,6 +9,7 @@ import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
 import com.ljf.eyepetizer.BaseFragment
+import com.ljf.eyepetizer.CommonUtils
 import com.ljf.eyepetizer.R
 import kotlinx.android.synthetic.main.view_tabitem.view.*
 
@@ -44,7 +45,7 @@ class TabItem<T : BaseFragment>(context: Context, attrs: AttributeSet?, defStyle
 
         orientation = VERTICAL
         gravity = Gravity.CENTER
-        setPadding(8, 8, 8, 8)
+        setPadding(CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f))
 
         if (fragmentClass != null) {
             tag = fragmentClass.name
