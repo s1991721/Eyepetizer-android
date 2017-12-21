@@ -45,7 +45,7 @@ class TabItem<T : BaseFragment>(context: Context, attrs: AttributeSet?, defStyle
 
         orientation = VERTICAL
         gravity = Gravity.CENTER
-        setPadding(CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f), CommonUtils.dpTopx(8f))
+        setPadding(CommonUtils.dpTopx(2f), CommonUtils.dpTopx(2f), CommonUtils.dpTopx(2f), CommonUtils.dpTopx(2f))
 
         if (fragmentClass != null) {
             tag = fragmentClass.name

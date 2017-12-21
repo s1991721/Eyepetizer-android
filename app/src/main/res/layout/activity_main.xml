@@ -29,9 +29,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:tag="com.ljf.eyepetizer.fragment.HomeFragment"
-            app:selectIcon="@mipmap/home_selected"
+            app:selectIcon="@mipmap/ic_tab_strip_icon_feed_selected"
             app:tip="@string/home"
-            app:unselectIcon="@mipmap/home_normal" />
+            app:unselectIcon="@mipmap/ic_tab_strip_icon_feed" />
 
         <com.ljf.eyepetizer.views.TabItem
             android:id="@+id/findTab"
@@ -39,9 +39,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:tag="com.ljf.eyepetizer.fragment.FindFragment"
-            app:selectIcon="@mipmap/find_selected"
+            app:selectIcon="@mipmap/ic_tab_strip_icon_follow_selected"
             app:tip="@string/find"
-            app:unselectIcon="@mipmap/find_normal" />
+            app:unselectIcon="@mipmap/ic_tab_strip_icon_follow" />
 
         <com.ljf.eyepetizer.views.TabItem
             android:id="@+id/hotTab"
@@ -49,9 +49,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:tag="com.ljf.eyepetizer.fragment.NotifyFragment"
-            app:selectIcon="@mipmap/hot_selected"
+            app:selectIcon="@mipmap/ic_tab_strip_icon_category_selected"
             app:tip="@string/hot"
-            app:unselectIcon="@mipmap/hot_normal" />
+            app:unselectIcon="@mipmap/ic_tab_strip_icon_category" />
 
         <com.ljf.eyepetizer.views.TabItem
             android:id="@+id/mineTab"
@@ -59,9 +59,9 @@
             android:layout_height="match_parent"
             android:layout_weight="1"
             android:tag="com.ljf.eyepetizer.fragment.MineFragment"
-            app:selectIcon="@mipmap/mine_selected"
+            app:selectIcon="@mipmap/ic_tab_strip_icon_profile_selected"
             app:tip="@string/mine"
-            app:unselectIcon="@mipmap/mine_normal" />
+            app:unselectIcon="@mipmap/ic_tab_strip_icon_profile" />
 
     </LinearLayout>
 

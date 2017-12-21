@@ -33,7 +33,7 @@ class MainActivity : BaseActivity() {
         val params: LinearLayout.LayoutParams? = LinearLayout.LayoutParams(0, MATCH_PARENT)
         params?.weight = 1f
         notifyTab = TabItem(this, NotifyFragment::class.java)
-        notifyTab.setIcon(ContextCompat.getDrawable(this, R.mipmap.home_selected), ContextCompat.getDrawable(this, R.mipmap.home_normal))
+        notifyTab.setIcon(ContextCompat.getDrawable(this, R.mipmap.ic_tab_strip_icon_category_selected), ContextCompat.getDrawable(this, R.mipmap.ic_tab_strip_icon_category))
         notifyTab.setTip("动态添加")
         notifyTab.setOnClickListener(onTabItemClickListener)
         bt_ll.addView(notifyTab, params)
