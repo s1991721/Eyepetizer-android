@@ -3,13 +3,9 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <TextView
-        android:id="@+id/textView"
+    <com.ljf.eyepetizer.views.ijkplayer.VideoViewIjk
+        android:id="@+id/videoview_ijk"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:gravity="center"
-        android:text="splash" />
-
-
+        android:layout_height="match_parent" />
 
 </LinearLayout>

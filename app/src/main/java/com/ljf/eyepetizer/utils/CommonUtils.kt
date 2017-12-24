@@ -1,4 +1,6 @@
-package com.ljf.eyepetizer
+package com.ljf.eyepetizer.utils
+
+import com.ljf.eyepetizer.App
 
 /**
  * Created by mr.lin on 2017/12/14.
