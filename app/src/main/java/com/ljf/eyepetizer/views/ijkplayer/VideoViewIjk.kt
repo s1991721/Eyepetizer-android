@@ -156,6 +156,10 @@ class VideoViewIjk(context: Context, attrs: AttributeSet? = null, defStyleAttr: 
         TODO("设置亮度")
     }
 
+    fun setLooping(boolean: Boolean) {
+        mediaPlayer.isLooping = boolean
+    }
+
     //回调
     override fun onPrepared(p0: IMediaPlayer?) {
         ijkPlayerListener?.onPrepared(p0)
