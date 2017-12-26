@@ -23,6 +23,8 @@ class SplashGuideFragment : BaseFragment() {
     lateinit var guideZh: Array<String>
     lateinit var guideEn: Array<String>
 
+    var isResume = false
+
     var currentPosition = 0
 
     lateinit var gestureDetector: GestureDetector
@@ -81,7 +83,10 @@ class SplashGuideFragment : BaseFragment() {
 
     override fun onResume() {
         super.onResume()
-        showSplash()
+        if (!isResume) {
+            showSplash()
+            isResume = true
+        }
     }
 
     private fun showSplash() {
