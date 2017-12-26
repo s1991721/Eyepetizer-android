@@ -1,5 +1,6 @@
 package com.ljf.eyepetizer.activity
 
+import android.graphics.Typeface
 import android.os.Bundle
 import com.ljf.eyepetizer.BaseActivity
 import com.ljf.eyepetizer.R
@@ -15,9 +16,15 @@ import tv.danmaku.ijk.media.player.IMediaPlayer
  */
 class SplashActivity : BaseActivity() {
 
+    lateinit var guideZh: Array<String>
+    lateinit var guideEn: Array<String>
+
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_splash)
+        guideZh = resources.getStringArray(R.array.lead_description_zh)
+        guideEn = resources.getStringArray(R.array.lead_description_en)
     }
 
     override fun onResume() {
@@ -49,6 +56,11 @@ class SplashActivity : BaseActivity() {
         })
         videoview_ijk.setLooping(true)
         videoview_ijk.setDataSource(CacheUtils.getFileDir() + "landing.mp4")
+        var typeFace = Typeface.createFromAsset(assets, "Lobster-1.4.otf")
+        zh.text = guideZh[0]
+        en.text = guideEn[0]
+        en.typeface = typeFace
+
     }
 
 }

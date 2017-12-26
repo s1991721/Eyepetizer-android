@@ -24,7 +24,8 @@
             android:layout_above="@+id/en"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="6dp"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
 
         <com.ljf.eyepetizer.views.TypeTextView
             android:id="@+id/en"
@@ -33,7 +34,8 @@
             android:layout_above="@+id/indicator"
             android:layout_centerHorizontal="true"
             android:layout_marginBottom="36dp"
-            android:textColor="#ffffff" />
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
 
         <com.ljf.eyepetizer.views.IndicatorView
             android:id="@+id/indicator"
