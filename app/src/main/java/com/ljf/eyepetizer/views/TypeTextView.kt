@@ -12,18 +12,19 @@ import android.widget.TextView
 class TypeTextView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : TextView(context, attrs, defStyleAttr) {
 
     lateinit var content: String
+    lateinit var animator: ValueAnimator
 
     constructor(context: Context) : this(context, null)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
 
-    fun setTypeText(string: String) {
+    fun setContentText(string: String) {
         content = string
         show()
     }
 
     fun show() {
-        var animator = ValueAnimator.ofInt(0, content.length)
-        animator.duration = 1500
+        animator = ValueAnimator.ofInt(0, content.length)
+        animator.duration = 1000
         animator.addUpdateListener { animation ->
             var len = animation?.animatedValue as Int
             text = content.substring(0, len)

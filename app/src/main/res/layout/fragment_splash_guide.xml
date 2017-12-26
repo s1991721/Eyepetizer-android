@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="utf-8"?>
+<com.ljf.eyepetizer.views.ijkplayer.VideoViewIjk xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/videoview_ijk"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="#000000">
+
+    <RelativeLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent">
+
+        <ImageView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_centerHorizontal="true"
+            android:layout_marginTop="224dp"
+            android:src="@mipmap/ic_account_login_header" />
+
+        <com.ljf.eyepetizer.views.TypeTextView
+            android:id="@+id/zh"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/en"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="6dp"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <com.ljf.eyepetizer.views.TypeTextView
+            android:id="@+id/en"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/indicator"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="36dp"
+            android:textColor="#ffffff"
+            android:textStyle="bold" />
+
+        <com.ljf.eyepetizer.views.IndicatorView
+            android:id="@+id/indicator"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_above="@+id/arrow_view"
+            android:layout_marginBottom="15dp"
+            app:indicatorView_count="4" />
+
+        <com.ljf.eyepetizer.views.MotionalArrowView
+            android:id="@+id/arrow_view"
+            android:layout_width="17dp"
+            android:layout_height="34dp"
+            android:layout_alignParentBottom="true"
+            android:layout_centerHorizontal="true"
+            android:layout_marginBottom="15dp" />
+
+    </RelativeLayout>
+
+</com.ljf.eyepetizer.views.ijkplayer.VideoViewIjk>
