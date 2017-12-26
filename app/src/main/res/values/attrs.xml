@@ -21,4 +21,11 @@
         <attr name="skip_loop_filter" format="integer"/>
     </declare-styleable>
 
+    <declare-styleable name="IndicatorView">
+        <attr name="indicatorView_normal" format="reference"/>
+        <attr name="indicatorView_checked" format="reference"/>
+        <attr name="indicatorView_margin" format="dimension"/>
+        <attr name="indicatorView_count" format="integer"/>
+    </declare-styleable>
+
 </resources>
