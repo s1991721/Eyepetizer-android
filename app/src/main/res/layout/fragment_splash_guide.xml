@@ -17,7 +17,7 @@
             android:layout_marginTop="224dp"
             android:src="@mipmap/ic_account_login_header" />
 
-        <com.ljf.eyepetizer.views.TypeTextView
+        <com.ljf.eyepetizer.views.CurtainTextView
             android:id="@+id/zh"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -27,7 +27,7 @@
             android:textColor="#ffffff"
             android:textStyle="bold" />
 
-        <com.ljf.eyepetizer.views.TypeTextView
+        <com.ljf.eyepetizer.views.CurtainTextView
             android:id="@+id/en"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
