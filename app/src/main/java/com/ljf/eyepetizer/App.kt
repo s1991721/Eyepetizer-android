@@ -45,7 +45,6 @@ class App : Application() {
         var inputStream = assets.open("landing.mp4")
         var outputStream = FileOutputStream(CacheUtils.getFileDir() + "landing.mp4")
         var byteArray = ByteArray(512)
-        var len: Int
         while (inputStream.read(byteArray) != -1) {
             outputStream.write(byteArray)
         }
