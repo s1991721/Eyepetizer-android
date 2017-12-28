@@ -1,8 +1,10 @@
 package com.ljf.eyepetizer.activity
 
+import android.content.Intent
 import android.os.Bundle
 import android.support.v4.app.Fragment
 import android.view.GestureDetector
+import android.view.KeyEvent
 import android.view.MotionEvent
 import com.ljf.eyepetizer.BaseActivity
 import com.ljf.eyepetizer.R
@@ -48,6 +50,16 @@ class SplashActivity : BaseActivity() {
             return gestureDetector.onTouchEvent(event)
         }
         return super.onTouchEvent(event)
+    }
+
+    override fun onKeyDown(keyCode: Int, event: KeyEvent): Boolean {
+        if (event.keyCode == KeyEvent.KEYCODE_BACK) {
+            startActivity(Intent(this, MainActivity::class.java))
+            overridePendingTransition(R.anim.slide_in_right, R.anim.slide_in_right)
+            finish()
+            return true
+        }
+        return super.onKeyDown(keyCode, event)
     }
 
 }
