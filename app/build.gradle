@@ -33,4 +33,8 @@ dependencies {
     //ijkPlayer
     compile 'tv.danmaku.ijk.media:ijkplayer-java:0.8.2'
     compile 'tv.danmaku.ijk.media:ijkplayer-armv7a:0.8.2'
+    //Retrofit
+    compile 'com.squareup.retrofit2:retrofit:2.3.0'
+    compile 'com.squareup.retrofit2:converter-gson:2.3.0'
+    compile 'com.squareup.retrofit2:adapter-rxjava:2.3.0'
 }
