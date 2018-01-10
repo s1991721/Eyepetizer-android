@@ -9,5 +9,4 @@ import org.json.JSONObject
 data class ViewData(private var jsonObject: JSONObject) {
     var type = jsonObject.getString("type")
     var json = jsonObject.getJSONObject("data")
-
 }

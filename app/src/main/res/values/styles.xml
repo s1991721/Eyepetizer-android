@@ -10,4 +10,16 @@
         <item name="windowNoTitle">true</item>
     </style>
 
+    <style name="DurationTv">
+        <item name="android:layout_width">wrap_content</item>
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_gravity">right|bottom</item>
+        <item name="android:layout_marginBottom">6dp</item>
+        <item name="android:layout_marginRight">10dp</item>
+        <item name="android:background">@drawable/bg_duration</item>
+        <item name="android:padding">3dp</item>
+        <item name="android:textColor">@color/cededed</item>
+        <item name="android:textSize">10sp</item>
+    </style>
+
 </resources>

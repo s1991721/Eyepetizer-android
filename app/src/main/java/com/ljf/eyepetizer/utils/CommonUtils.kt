@@ -13,6 +13,12 @@ class CommonUtils {
             var density = App.instance().resources.displayMetrics.density
             return (dp * density + 0.5).toInt()
         }
+
+        fun secondsToMin(seconds: Int): String {
+            var min = seconds / 60
+            var second = seconds % 60
+            return min.toString() + ":" + second.toString()
+        }
     }
 
 }
