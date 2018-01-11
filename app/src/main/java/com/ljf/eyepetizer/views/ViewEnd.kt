@@ -1,4 +1,4 @@
-package com.ljf.eyepetizer.views.jsonview
+package com.ljf.eyepetizer.views
 
 import android.content.Context
 import android.graphics.Typeface
