@@ -10,6 +10,7 @@ import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.ViewData
 import com.ljf.eyepetizer.utils.JsonViewUtils
+import com.ljf.eyepetizer.views.jsonview.ViewEnd
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -53,6 +54,8 @@ class HomeFragment : BaseFragment() {
                 linearlayout.addView(view)
             }
         }
+
+        linearlayout.addView(ViewEnd(context))
         textview.text = linearlayout.childCount.toString()
     }
 
