@@ -1,11 +1,7 @@
 package com.ljf.eyepetizer.views.jsonview
 
 import android.content.Context
-import android.support.v4.view.PagerAdapter
-import android.support.v4.view.ViewPager
 import android.util.AttributeSet
-import android.view.View
-import android.view.ViewGroup
 import android.widget.HorizontalScrollView
 import android.widget.LinearLayout
 import com.ljf.eyepetizer.model.ViewData
@@ -34,7 +30,7 @@ class ViewHorizontalScrollCard(context: Context, json: JSONObject, attrs: Attrib
             }
         }
 
-        linearLayout.setPadding(CommonUtils.dpTopx(7f), 0, CommonUtils.dpTopx(15f), 0)
+        linearLayout.setPadding(CommonUtils.dpTopx(7f), CommonUtils.dpTopx(10f), CommonUtils.dpTopx(15f), 0)
 
         isHorizontalScrollBarEnabled = false
 
