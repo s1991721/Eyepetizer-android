@@ -2,26 +2,29 @@ package com.ljf.eyepetizer.views.jsonview
 
 import android.content.Context
 import android.util.AttributeSet
-import android.widget.HorizontalScrollView
-import android.widget.LinearLayout
+import android.view.LayoutInflater
+import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.model.ViewData
-import com.ljf.eyepetizer.utils.CommonUtils
 import com.ljf.eyepetizer.utils.JsonViewUtils
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.view_horizontalscrollcard.view.*
 
 /**
  * Created by mr.lin on 2018/1/8.
  */
-class ViewHorizontalScrollCard(context: Context, json: JSONObject, attrs: AttributeSet?) : HorizontalScrollView(context, attrs) {
+class ViewHorizontalScrollCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : BaseJsonView(context, attrs, defStyleAttr) {
 
-    constructor(context: Context, json: JSONObject) : this(context, json, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context) : this(context, null)
 
     init {
+        LayoutInflater.from(context).inflate(R.layout.view_horizontalscrollcard, this, true)
+    }
 
-        var linearLayout = LinearLayout(context)
-        linearLayout.orientation = LinearLayout.HORIZONTAL
-
+    override fun initView() {
+        var json = data.json
         val jsonArray = json.getJSONArray("itemList")
+        //多次调用view会重复
+        linearLayout.removeAllViews()
         for (i in 0 until jsonArray.length()) {
             val jsonObject = jsonArray.getJSONObject(i)
             var view = JsonViewUtils.viewDataToView(context, ViewData(jsonObject))
@@ -29,13 +32,6 @@ class ViewHorizontalScrollCard(context: Context, json: JSONObject, attrs: Attrib
                 linearLayout.addView(view)
             }
         }
-
-        linearLayout.setPadding(CommonUtils.dpTopx(7f), CommonUtils.dpTopx(10f), CommonUtils.dpTopx(15f), 0)
-
-        isHorizontalScrollBarEnabled = false
-
-        addView(linearLayout)
-
     }
 
 

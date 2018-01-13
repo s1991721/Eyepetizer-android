@@ -5,58 +5,64 @@ import android.support.v4.content.ContextCompat
 import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.Gravity
+import android.view.LayoutInflater
 import android.view.ViewGroup
-import android.widget.LinearLayout
-import android.widget.TextView
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.utils.CommonUtils
-import org.json.JSONObject
+import kotlinx.android.synthetic.main.view_textcard.view.*
 
 /**
  * Created by mr.lin on 2018/1/7.
  */
-class ViewTextCard(context: Context?, json: JSONObject, attrs: AttributeSet?, defStyleAttr: Int) : TextView(context, attrs, defStyleAttr) {
+class ViewTextCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : BaseJsonView(context, attrs, defStyleAttr) {
 
-    constructor(context: Context, json: JSONObject, attrs: AttributeSet?) : this(context, json, attrs, 0)
-    constructor(context: Context, json: JSONObject) : this(context, json, null)
+    constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context) : this(context, null)
 
     init {
+        LayoutInflater.from(context).inflate(R.layout.view_textcard, this)
+        layoutParams = LayoutParams(LayoutParams.MATCH_PARENT, LayoutParams.WRAP_CONTENT)
+    }
+
+    override fun initView() {
+        var json = data.json
 
         when (json.getString("type")) {
 
             "header5" -> {
-                textSize = 20f
-                paint.isFakeBoldText = true
-                setTextColor(ContextCompat.getColor(context, R.color.c444444))
+                tv.textSize = 20f
+                tv.paint.isFakeBoldText = true
+                tv.setTextColor(ContextCompat.getColor(context, R.color.c444444))
                 setPadding(CommonUtils.dpTopx(15f), CommonUtils.dpTopx(30f), 0, 0)
 
-                gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
+                tv.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
 
-                if (!TextUtils.isEmpty(json.getString("actionUrl"))) {
+                if ("null" != (json.getString("actionUrl"))) {
                     var drawable = ContextCompat.getDrawable(context, R.mipmap.goto_icon)
                     drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
-                    setCompoundDrawables(null, null, drawable, null)
+                    tv.setCompoundDrawables(null, null, drawable, null)
+                } else {
+                    tv.setCompoundDrawables(null, null, null, null)
                 }
 
-                layoutParams = ViewGroup.LayoutParams(ViewGroup.LayoutParams.WRAP_CONTENT, ViewGroup.LayoutParams.WRAP_CONTENT)
             }
 
             "footer2" -> {
-                textSize = 12f
-                paint.isFakeBoldText = true
-                setTextColor(ContextCompat.getColor(context, R.color.c444444))
-                gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
+                tv.textSize = 12f
+                tv.paint.isFakeBoldText = true
+                tv.setTextColor(ContextCompat.getColor(context, R.color.c444444))
+                tv.gravity = Gravity.RIGHT or Gravity.CENTER_VERTICAL
 
                 var drawable = ContextCompat.getDrawable(context, R.mipmap.goto_icon)
                 drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
-                setCompoundDrawables(null, null, drawable, null)
+                tv.setCompoundDrawables(null, null, drawable, null)
 
                 setPadding(0, CommonUtils.dpTopx(20f), 0, 0)
             }
 
         }
 
-        text = json.getString("text")
+        tv.text = json.getString("text")
     }
 
 }
