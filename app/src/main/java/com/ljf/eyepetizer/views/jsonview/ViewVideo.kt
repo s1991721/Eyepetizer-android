@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.utils.CommonUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_video.view.*
 
 /**
@@ -22,7 +23,8 @@ class ViewVideo(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : Bas
 
     override fun initView() {
         var json = data.json
-        Glide.with(context).load(json.getJSONObject("cover").getString("feed")).into(coverIv)
+
+        GlideUtils.loadRoundImage(context,json.getJSONObject("cover").getString("feed"),coverIv,10)
 
         durationTv.text = CommonUtils.secondsToMin(json.getInt("duration"))
 

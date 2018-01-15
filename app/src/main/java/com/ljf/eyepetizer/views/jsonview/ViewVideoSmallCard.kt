@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.utils.CommonUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_videosmallcard.view.*
 
 /**
@@ -24,7 +25,7 @@ class ViewVideoSmallCard(context: Context, attrs: AttributeSet?, defStyleAttr: I
     override fun initView() {
         var json = data.json
 
-        Glide.with(context).load(json.getJSONObject("cover").getString("feed")).into(coverIv)
+        GlideUtils.loadRoundImage(context, json.getJSONObject("cover").getString("feed"), coverIv, 5)
 
         durationTv.text = CommonUtils.secondsToMin(json.getString("duration").toInt())
 

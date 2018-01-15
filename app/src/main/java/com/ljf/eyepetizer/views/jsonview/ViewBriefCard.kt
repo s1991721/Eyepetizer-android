@@ -5,6 +5,7 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_briefcard.view.*
 
 /**
@@ -22,7 +23,7 @@ class ViewBriefCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     override fun initView() {
         var json = data.json
 
-        Glide.with(context).load(json.getString("icon")).into(iconIv)
+        GlideUtils.loadRoundImage(context, json.getString("icon"), iconIv, 5)
 
         titleTv.text = json.getString("title")
 

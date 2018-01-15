@@ -5,6 +5,8 @@ import android.util.AttributeSet
 import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
+import com.ljf.eyepetizer.utils.CommonUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_dynamicinfocard.view.*
 
 /**
@@ -26,7 +28,7 @@ class ViewDynamicInfoCard(context: Context, attrs: AttributeSet?, defStyleAttr: 
         var reply = json.getJSONObject("reply")
         var simpleVideo = json.getJSONObject("simpleVideo")
 
-        Glide.with(context).load(user.getString("avatar")).into(avatarIv)
+        GlideUtils.loadCircleImage(context, user.getString("avatar"), avatarIv)
 
         nicknameTv.text = user.getString("nickname")
 
@@ -34,14 +36,14 @@ class ViewDynamicInfoCard(context: Context, attrs: AttributeSet?, defStyleAttr: 
 
         messageTv.text = reply.getString("message")
 
-        Glide.with(context).load(simpleVideo.getJSONObject("cover").getString("feed")).into(coverIv)
+        GlideUtils.loadImage(context, simpleVideo.getJSONObject("cover").getString("feed"), coverIv)
 
         titleTv.text = simpleVideo.getString("title")
 
         categoryTv.text = simpleVideo.getString("category")
 
-        likecountTv.text = reply.getString("likeCount")
+        likecountTv.text = String.format("%s %s", context.getString(R.string.fabulous), reply.getString("likeCount"))
 
-        createdateTv.text = json.getString("createDate")
+        createdateTv.text = CommonUtils.showCurrentTime(json.getString("createDate").toLong())
     }
 }

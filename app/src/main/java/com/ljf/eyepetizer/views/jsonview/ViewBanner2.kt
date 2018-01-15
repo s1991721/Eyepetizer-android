@@ -4,9 +4,9 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.LayoutInflater
 import android.widget.ImageView
-import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.utils.CommonUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_banner2.view.*
 
 /**
@@ -20,13 +20,14 @@ class ViewBanner2(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : B
     init {
         LayoutInflater.from(context).inflate(R.layout.view_banner2, this, true)
 
+        layoutParams = LayoutParams(CommonUtils.dpTopx(330f), CommonUtils.dpTopx(190f))
         iv.scaleType = ImageView.ScaleType.FIT_CENTER
     }
 
     override fun initView() {
         val url = data.json.getString("image")
 
-        Glide.with(context).load(url).into(iv)
+        GlideUtils.loadRoundImage(context, url, iv, 10)
     }
 
 }

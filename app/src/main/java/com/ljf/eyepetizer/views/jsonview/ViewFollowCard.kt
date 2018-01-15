@@ -6,6 +6,7 @@ import android.view.LayoutInflater
 import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.utils.CommonUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_followcard.view.*
 
 /**
@@ -26,11 +27,11 @@ class ViewFollowCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         var contentData = json.getJSONObject("content").getJSONObject("data")
         var header = json.getJSONObject("header")
 
-        Glide.with(context).load(contentData.getJSONObject("cover").getString("feed")).into(coverIv)
+        GlideUtils.loadRoundImage(context,contentData.getJSONObject("cover").getString("feed"),coverIv,10)
 
         durationTv.text = CommonUtils.secondsToMin(contentData.getInt("duration"))
 
-        Glide.with(context).load(contentData.getJSONObject("author").getString("icon")).into(iconIv)
+        GlideUtils.loadCircleImage(context,contentData.getJSONObject("author").getString("icon"),iconIv)
 
         titleTv.text = contentData.getString("title")
 

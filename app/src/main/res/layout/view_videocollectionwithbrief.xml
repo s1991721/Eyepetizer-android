@@ -41,6 +41,8 @@
                     android:id="@+id/descriptionTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:ellipsize="end"
+                    android:singleLine="true"
                     android:text="aaa"
                     android:textColor="@color/c969696"
                     android:textSize="11sp" />
@@ -51,8 +53,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_vertical"
-                android:layout_marginRight="16dp"
-                android:text="aaa" />
+                android:layout_marginRight="16dp" />
 
 
         </LinearLayout>

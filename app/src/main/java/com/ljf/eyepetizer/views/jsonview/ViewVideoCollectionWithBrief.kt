@@ -7,6 +7,7 @@ import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.model.ViewData
 import com.ljf.eyepetizer.utils.JsonViewUtils
+import com.ljf.eyepetizer.utils.glide.GlideUtils
 import kotlinx.android.synthetic.main.view_videocollectionwithbrief.view.*
 
 /**
@@ -26,7 +27,7 @@ class ViewVideoCollectionWithBrief(context: Context, attrs: AttributeSet?, defSt
 
         var header = json.getJSONObject("header")
 
-        Glide.with(context).load(header.getString("icon")).into(iconIv)
+        GlideUtils.loadCircleImage(context,header.getString("icon"),iconIv)
 
         titleTv.text = header.getString("title")
 
