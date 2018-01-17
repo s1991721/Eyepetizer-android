@@ -10,6 +10,8 @@ import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.JsonViewAdapter
 import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.ViewData
+import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView
+import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView.OnRefreshListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
 import org.json.JSONObject
@@ -57,8 +59,13 @@ class HomeFragment : BaseFragment() {
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.layoutManager = LinearLayoutManager(context)
-        recyclerView.adapter = adapter
+        recyclerView.setLayoutManager(LinearLayoutManager(context))
+        recyclerView.setAdapter(adapter)
+        recyclerView.onRefreshListener = object : OnRefreshListener {
+            override fun onRefresh() {
+                recyclerView.postDelayed({ recyclerView.changeState(RefreshRecyclerView.STATE_NORMAL) }, 3000)
+            }
+        }
     }
 
 }
