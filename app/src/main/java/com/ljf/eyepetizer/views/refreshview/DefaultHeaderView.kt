@@ -1,6 +1,8 @@
 package com.ljf.eyepetizer.views.refreshview
 
 import android.animation.Animator
+import android.animation.AnimatorSet
+import android.animation.ObjectAnimator
 import android.animation.ValueAnimator
 import android.content.Context
 import android.util.AttributeSet
@@ -24,10 +26,11 @@ class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: In
 
     private var headerHeight = CommonUtils.dpTopx(50f)
 
-    private var rotateAnimation1: Animation
-    private var rotateAnimation2: Animation
-    private var rotateAnimation3: Animation
-    private var rotateAnimation4: Animation
+    private lateinit var rotateAnimator1: ObjectAnimator
+    private lateinit var rotateAnimator2: ObjectAnimator
+    private lateinit var rotateAnimator3: ObjectAnimator
+    private lateinit var rotateAnimator4: ObjectAnimator
+    private lateinit var animatorSet: AnimatorSet
 
     private var valueAnimator: ValueAnimator = ValueAnimator()
 
@@ -37,27 +40,6 @@ class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: In
         var params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0)
         params.gravity = Gravity.CENTER
         layoutParams = params
-
-        rotateAnimation1 = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation1.duration = 1000
-        rotateAnimation1.repeatCount = INFINITE
-        rotateAnimation1.interpolator = LinearInterpolator()
-
-        rotateAnimation2 = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation2.duration = 1000
-        rotateAnimation2.repeatCount = INFINITE
-        rotateAnimation2.interpolator = AccelerateDecelerateInterpolator()
-
-        rotateAnimation3 = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation3.duration = 1000
-        rotateAnimation3.repeatCount = INFINITE
-        rotateAnimation3.interpolator = AccelerateInterpolator()
-
-        rotateAnimation4 = RotateAnimation(0f, 360f, Animation.RELATIVE_TO_SELF, 0.5f, Animation.RELATIVE_TO_SELF, 0.5f)
-        rotateAnimation4.duration = 1000
-        rotateAnimation4.repeatCount = INFINITE
-        rotateAnimation4.interpolator = AccelerateInterpolator()
-
     }
 
     override fun setVisibleHeight(height: Float) {
@@ -113,18 +95,29 @@ class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: In
     }
 
     private fun startRotate() {
-        stopRotate()
-        iv1.startAnimation(rotateAnimation1)
-        iv2.postDelayed({ iv2.startAnimation(rotateAnimation2) }, 800)
-        iv3.postDelayed({ iv3.startAnimation(rotateAnimation3) }, 500)
-        iv4.postDelayed({ iv4.startAnimation(rotateAnimation4) }, 100)
+        initRotate()
+        animatorSet.start()
+    }
+
+    private fun initRotate() {
+        rotateAnimator1 = ObjectAnimator.ofFloat(iv1, "rotation", 0f, 360f).setDuration(1000)
+        rotateAnimator1.repeatCount = INFINITE
+        rotateAnimator2 = ObjectAnimator.ofFloat(iv2, "rotation", 0f, 360f).setDuration(1000)
+        rotateAnimator2.repeatCount = INFINITE
+        rotateAnimator3 = ObjectAnimator.ofFloat(iv3, "rotation", 0f, 360f).setDuration(1000)
+        rotateAnimator3.repeatCount = INFINITE
+        rotateAnimator4 = ObjectAnimator.ofFloat(iv4, "rotation", 0f, 360f).setDuration(1000)
+        rotateAnimator4.repeatCount = INFINITE
+        animatorSet = AnimatorSet()
+        animatorSet.play(rotateAnimator1)
+        animatorSet.play(rotateAnimator4).after(200)
+        animatorSet.play(rotateAnimator3).after(400)
+        animatorSet.play(rotateAnimator2).after(600)
     }
 
     private fun stopRotate() {
-        rotateAnimation1.cancel()
-        rotateAnimation2.cancel()
-        rotateAnimation3.cancel()
-        rotateAnimation4.cancel()
+        animatorSet.end()
+        animatorSet.cancel()
     }
 
 }
