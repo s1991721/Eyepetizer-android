@@ -5,12 +5,13 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import android.widget.Toast
 import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.JsonViewAdapter
 import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.ViewData
-import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView
+import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView.OnLoadMoreListener
 import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView.OnRefreshListener
 import kotlinx.android.synthetic.main.fragment_home.*
 import okhttp3.ResponseBody
@@ -31,24 +32,6 @@ class HomeFragment : BaseFragment() {
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         adapter = JsonViewAdapter(context, viewDatas)
-        Requester.apiService().getTabDiscovery().enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-                toModel(response.body()!!.string())
-                adapter.notifyDataSetChanged()
-            }
-
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-            }
-        })
-    }
-
-    fun toModel(string: String) {
-        var json = JSONObject(string)
-        var jsonArray = json.getJSONArray("itemList")
-        for (i in 0 until jsonArray.length()) {
-            var viewData = ViewData(jsonArray.getJSONObject(i))
-            viewDatas.add(viewData)
-        }
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
@@ -63,8 +46,40 @@ class HomeFragment : BaseFragment() {
         recyclerView.setAdapter(adapter)
         recyclerView.onRefreshListener = object : OnRefreshListener {
             override fun onRefresh() {
-                recyclerView.postDelayed({ recyclerView.changeState(RefreshRecyclerView.STATE_NORMAL) }, 3000)
+                initData()
             }
+        }
+        recyclerView.onLoadMoreListener = object : OnLoadMoreListener {
+            override fun onLoadMore() {
+                Toast.makeText(context, "load more", Toast.LENGTH_LONG).show()
+                recyclerView.postDelayed({ recyclerView.stopLoadMore() }, 3000)
+            }
+        }
+        recyclerView.startRefresh()
+    }
+
+    fun initData() {
+        Requester.apiService().getTabDiscovery().enqueue(object : Callback<ResponseBody> {
+            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
+                toModel(response.body()!!.string())
+                adapter.notifyDataSetChanged()
+                if (recyclerView != null) {
+                    recyclerView.stopRefresh()
+                }
+            }
+
+            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+            }
+        })
+    }
+
+    fun toModel(string: String) {
+        var json = JSONObject(string)
+        var jsonArray = json.getJSONArray("itemList")
+        viewDatas.clear()
+        for (i in 0 until jsonArray.length()) {
+            var viewData = ViewData(jsonArray.getJSONObject(i))
+            viewDatas.add(viewData)
         }
     }
 

@@ -160,7 +160,7 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     }
 
     fun notifyLoadMore() {
-        postDelayed({ onLoadMoreListener?.onLoadMore() }, delay)
+        onLoadMoreListener?.onLoadMore()
     }
 
     fun notifyLoadMoreEnd() {
