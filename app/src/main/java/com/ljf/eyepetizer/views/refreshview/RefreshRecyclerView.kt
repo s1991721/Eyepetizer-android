@@ -21,13 +21,13 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     private var recyclerView = RecyclerView(context)
     private var footerView: FooterView
 
+    var delay = 2000L
+
     companion object {
         val STATE_NORMAL = 0
         val STATE_PULLING = 1
         val STATE_REFRESHING = 2
-
-        val STATE_LIFTLING = 3
-        val STATE_LOADING = 4
+        val STATE_LOADING = 3
     }
 
     var currentState = STATE_NORMAL
@@ -48,6 +48,7 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     var startY = 0f
 
     var onRefreshListener: OnRefreshListener? = null
+    var onLoadMoreListener: OnLoadMoreListener? = null
 
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (isScrollToTop()) {
@@ -86,33 +87,7 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         if (isScrollToBottom()) {
 
             Logger.i("RefreshRecyclerView", "ScrollToBottom")
-
-            when (ev.action) {
-
-                MotionEvent.ACTION_DOWN -> {
-                    startY = ev.y
-                }
-
-                MotionEvent.ACTION_MOVE -> {
-                    if (currentState != STATE_LOADING) {
-                        if (ev.y - startY < 0) {
-                            changeState(STATE_LIFTLING)
-                            footerView.setVisibleHeight(Math.abs(ev.y - startY))
-                            return true
-                        }
-
-                    }
-                    changeState(STATE_NORMAL)
-
-                }
-
-                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (currentState == STATE_LIFTLING) {
-                        changeState(STATE_LOADING)
-                    }
-                }
-
-            }
+            changeState(STATE_LOADING)
 
         }
 
@@ -120,7 +95,6 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     }
 
     //刷新操作
-
     private fun isScrollToTop(): Boolean {
         val layoutManager = recyclerView.layoutManager as LinearLayoutManager
         val position = layoutManager.findFirstVisibleItemPosition()
@@ -131,11 +105,14 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         return firstVisiableChildView.top == 0
     }
 
-    fun changeState(state: Int) {
+    private fun changeState(state: Int) {
         when (currentState) {
             STATE_NORMAL -> {
                 if (state == STATE_REFRESHING) {
                     notifyRefresh()
+                }
+                if (state == STATE_LOADING) {
+                    notifyLoadMore()
                 }
                 currentState = state
             }
@@ -154,15 +131,18 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 }
                 currentState = state
             }
-            STATE_LIFTLING -> {
-//                notifyLift()
+            STATE_LOADING -> {
+                if (state == STATE_NORMAL) {
+                    notifyLoadMoreEnd()
+                }
+                currentState = state
             }
 
         }
     }
 
     private fun notifyRefresh() {
-        onRefreshListener?.onRefresh()
+        postDelayed({ onRefreshListener?.onRefresh() }, delay)
         headerView.startRefresh()
     }
 
@@ -177,6 +157,14 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     //更多操作
     fun isScrollToBottom(): Boolean {
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()
+    }
+
+    fun notifyLoadMore() {
+        postDelayed({ onLoadMoreListener?.onLoadMore() }, delay)
+    }
+
+    fun notifyLoadMoreEnd() {
+
     }
 
     //对外使用
@@ -198,8 +186,24 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         invalidate()
     }
 
+    fun startRefresh() {
+        changeState(STATE_REFRESHING)
+    }
+
+    fun stopRefresh() {
+        changeState(STATE_NORMAL)
+    }
+
+    fun stopLoadMore() {
+        changeState(STATE_NORMAL)
+    }
+
     interface OnRefreshListener {
         fun onRefresh()
+    }
+
+    interface OnLoadMoreListener {
+        fun onLoadMore()
     }
 
 }
