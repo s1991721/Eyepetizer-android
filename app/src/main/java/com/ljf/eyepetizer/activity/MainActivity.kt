@@ -56,18 +56,18 @@ class MainActivity : BaseActivity() {
 
     private fun showFragment(fragmentClass: Class<BaseFragment>?) {
         val trasaction = supportFragmentManager.beginTransaction()
-        val detachFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
-        if (detachFragment != null) {
-            trasaction.detach(detachFragment)
+        val hideFragment = supportFragmentManager.findFragmentByTag(currentFragmentTag)
+        if (hideFragment != null) {
+            trasaction.hide(hideFragment)
         }
 
-        var attachFragment = supportFragmentManager.findFragmentByTag(fragmentClass?.simpleName)
+        var showFragment = supportFragmentManager.findFragmentByTag(fragmentClass?.simpleName)
 
-        if (attachFragment == null) {
-            attachFragment = fragmentClass?.newInstance()
-            trasaction.add(R.id.frame_layout, attachFragment, fragmentClass?.simpleName)
+        if (showFragment == null) {
+            showFragment = fragmentClass?.newInstance()
+            trasaction.add(R.id.frame_layout, showFragment, fragmentClass?.simpleName)
         } else {
-            trasaction.attach(attachFragment)
+            trasaction.show(showFragment)
         }
         trasaction.commit()
         currentFragmentTag = fragmentClass?.simpleName
