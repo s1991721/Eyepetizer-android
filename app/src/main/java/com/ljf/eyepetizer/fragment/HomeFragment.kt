@@ -55,7 +55,9 @@ class HomeFragment : BaseFragment() {
                 recyclerView.postDelayed({ recyclerView.stopLoadMore() }, 3000)
             }
         }
-        recyclerView.startRefresh()
+        if (viewDatas.size == 0) {
+            recyclerView.startRefresh()
+        }
     }
 
     fun initData() {
