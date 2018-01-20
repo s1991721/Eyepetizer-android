@@ -1,4 +1,4 @@
-package com.ljf.eyepetizer
+package com.ljf.eyepetizer.fragment
 
 import android.support.v4.app.Fragment
 

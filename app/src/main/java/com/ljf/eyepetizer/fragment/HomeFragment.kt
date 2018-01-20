@@ -7,7 +7,6 @@ import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
 import com.google.gson.reflect.TypeToken
-import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.HomeCategoryAdapter
 import com.ljf.eyepetizer.adapter.HomeFragmentAdapter

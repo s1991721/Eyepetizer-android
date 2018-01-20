@@ -4,7 +4,6 @@ import android.content.Intent
 import android.graphics.Typeface
 import android.os.Bundle
 import android.view.*
-import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.activity.MainActivity
 import com.ljf.eyepetizer.activity.SplashActivity

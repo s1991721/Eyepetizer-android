@@ -6,7 +6,6 @@ import android.support.v4.app.Fragment
 import android.view.GestureDetector
 import android.view.KeyEvent
 import android.view.MotionEvent
-import com.ljf.eyepetizer.BaseActivity
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.fragment.SplashGuideFragment
 import com.ljf.eyepetizer.fragment.SplashScaleFragment

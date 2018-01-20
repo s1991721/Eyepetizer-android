@@ -8,7 +8,7 @@ import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
 import android.widget.LinearLayout
-import com.ljf.eyepetizer.BaseFragment
+import com.ljf.eyepetizer.fragment.BaseFragment
 import com.ljf.eyepetizer.utils.CommonUtils
 import com.ljf.eyepetizer.R
 import kotlinx.android.synthetic.main.view_tabitem.view.*

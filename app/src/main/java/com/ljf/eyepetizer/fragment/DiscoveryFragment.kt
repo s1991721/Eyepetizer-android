@@ -6,7 +6,6 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.JsonViewAdapter
 import com.ljf.eyepetizer.http.Requester

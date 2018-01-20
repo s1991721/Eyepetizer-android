@@ -3,7 +3,7 @@ package com.ljf.eyepetizer.adapter
 import android.support.v4.app.Fragment
 import android.support.v4.app.FragmentManager
 import android.support.v4.app.FragmentPagerAdapter
-import com.ljf.eyepetizer.BaseFragment
+import com.ljf.eyepetizer.fragment.BaseFragment
 
 /**
  * Created by mr.lin on 2018/1/19.

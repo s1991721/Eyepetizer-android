@@ -4,8 +4,7 @@ import android.os.Bundle
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
-import com.ljf.eyepetizer.BaseActivity
-import com.ljf.eyepetizer.BaseFragment
+import com.ljf.eyepetizer.fragment.BaseFragment
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.Category

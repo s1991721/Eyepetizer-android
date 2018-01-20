@@ -1,4 +1,4 @@
-package com.ljf.eyepetizer
+package com.ljf.eyepetizer.activity
 
 import android.support.v7.app.AppCompatActivity
 
