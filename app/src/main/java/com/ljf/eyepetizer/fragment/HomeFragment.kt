@@ -6,19 +6,15 @@ import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
+import com.google.gson.reflect.TypeToken
 import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
-import com.ljf.eyepetizer.adapter.JsonViewAdapter
-import com.ljf.eyepetizer.http.Requester
-import com.ljf.eyepetizer.model.ViewData
-import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView.OnLoadMoreListener
-import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView.OnRefreshListener
+import com.ljf.eyepetizer.adapter.HomeCategoryAdapter
+import com.ljf.eyepetizer.adapter.HomeFragmentAdapter
+import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.utils.SpUtils
+import com.ljf.eyepetizer.utils.SpUtils.Companion.KEY_CATEGORY_LIST
 import kotlinx.android.synthetic.main.fragment_home.*
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
 
 /**
  * Created by mr.lin on 2017/12/13.
@@ -26,63 +22,50 @@ import retrofit2.Response
  */
 class HomeFragment : BaseFragment() {
 
-    var viewDatas = ArrayList<ViewData>()
-    lateinit var adapter: JsonViewAdapter
+    private lateinit var guideAdapter: HomeCategoryAdapter
+    private lateinit var fragmentAdapter: HomeFragmentAdapter
+
+    private var categorys = ArrayList<Category>()
+    private var fragments = ArrayList<BaseFragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        adapter = JsonViewAdapter(context, viewDatas)
+        initData()
+        initAdapter()
+
+    }
+
+    private fun initData() {
+        var list = SpUtils.getList<List<Category>>(KEY_CATEGORY_LIST, object : TypeToken<List<Category>>() {}.type)
+        categorys.addAll(list)
+
+        fragments.add(DiscoveryFragment())
+    }
+
+    private fun initAdapter() {
+        guideAdapter = HomeCategoryAdapter(context, categorys)
+        guideAdapter.onSelectPositionChangeListener = object : HomeCategoryAdapter.OnSelectPositionChangeListener {
+            override fun onSelectPositionChange(position: Int) {
+                Toast.makeText(context, "" + position, Toast.LENGTH_LONG).show()
+            }
+
+        }
+        fragmentAdapter = HomeFragmentAdapter(fragments, fragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater?.inflate(R.layout.fragment_home, container, false)
-        //NullPointerException 此时控件没有初始化
-        return view
+        return inflater?.inflate(R.layout.fragment_home, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
-        recyclerView.setLayoutManager(LinearLayoutManager(context))
-        recyclerView.setAdapter(adapter)
-        recyclerView.onRefreshListener = object : OnRefreshListener {
-            override fun onRefresh() {
-                initData()
-            }
-        }
-        recyclerView.onLoadMoreListener = object : OnLoadMoreListener {
-            override fun onLoadMore() {
-                Toast.makeText(context, "load more", Toast.LENGTH_LONG).show()
-                recyclerView.postDelayed({ recyclerView.stopLoadMore() }, 3000)
-            }
-        }
-        if (viewDatas.size == 0) {
-            recyclerView.startRefresh()
-        }
-    }
 
-    fun initData() {
-        Requester.apiService().getTabDiscovery().enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-                toModel(response.body()!!.string())
-                adapter.notifyDataSetChanged()
-                if (recyclerView != null) {
-                    recyclerView.stopRefresh()
-                }
-            }
+        var layoutManager = LinearLayoutManager(context)
+        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
+        recyclerView.layoutManager = layoutManager
+        recyclerView.adapter = guideAdapter
 
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-            }
-        })
-    }
-
-    fun toModel(string: String) {
-        var json = JSONObject(string)
-        var jsonArray = json.getJSONArray("itemList")
-        viewDatas.clear()
-        for (i in 0 until jsonArray.length()) {
-            var viewData = ViewData(jsonArray.getJSONObject(i))
-            viewDatas.add(viewData)
-        }
+        viewPager.adapter = fragmentAdapter
     }
 
 }
