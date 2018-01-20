@@ -1,16 +1,22 @@
 package com.ljf.eyepetizer.activity
 
 import android.os.Bundle
-import android.support.v4.content.ContextCompat
 import android.view.View
 import android.view.ViewGroup.LayoutParams.MATCH_PARENT
 import android.widget.LinearLayout
 import com.ljf.eyepetizer.BaseActivity
 import com.ljf.eyepetizer.BaseFragment
 import com.ljf.eyepetizer.R
-import com.ljf.eyepetizer.fragment.NotifyFragment
-import com.ljf.eyepetizer.views.TabItem
+import com.ljf.eyepetizer.http.Requester
+import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.utils.SpUtils
+import com.ljf.eyepetizer.utils.SpUtils.Companion.KEY_CATEGORY_LIST
 import kotlinx.android.synthetic.main.activity_main.*
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 
 class MainActivity : BaseActivity() {
 
@@ -20,6 +26,30 @@ class MainActivity : BaseActivity() {
         super.onCreate(savedInstanceState)
         setContentView(R.layout.activity_main)
         initView()
+        initData()
+    }
+
+    var categorys = ArrayList<Category>()
+
+    private fun initData() {
+        Requester.apiService().getCategoryList().enqueue(object : Callback<ResponseBody> {
+            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+            }
+
+            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
+                toCategory(response.body()!!.string())
+            }
+        })
+    }
+
+    fun toCategory(json: String) {
+        var jsonArry = JSONObject(json).getJSONObject("tabInfo").getJSONArray("tabList")
+        for (i in 0 until jsonArry.length()) {
+            var jsonObject = jsonArry.getJSONObject(i)
+            var category = Category(jsonObject.getInt("id"), jsonObject.getString("name"), jsonObject.getString("apiUrl"))
+            categorys.add(category)
+        }
+        SpUtils.setList(KEY_CATEGORY_LIST, categorys)
     }
 
     private fun initView() {

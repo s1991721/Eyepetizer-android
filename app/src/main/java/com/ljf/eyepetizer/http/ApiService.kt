@@ -17,4 +17,7 @@ interface ApiService {
     @GET("api/v5/index/tab/discovery")
     fun getTabDiscovery(): Call<ResponseBody>
 
+    @GET("api/v5/index/tab/list")
+    fun getCategoryList():Call<ResponseBody>
+
 }
