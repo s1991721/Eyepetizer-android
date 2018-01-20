@@ -1,18 +1,17 @@
 package com.ljf.eyepetizer.fragment
 
 import android.os.Bundle
+import android.support.v4.view.ViewPager
 import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import android.widget.Toast
-import com.google.gson.reflect.TypeToken
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.HomeCategoryAdapter
 import com.ljf.eyepetizer.adapter.HomeFragmentAdapter
+import com.ljf.eyepetizer.manager.CategoryManager
 import com.ljf.eyepetizer.model.Category
-import com.ljf.eyepetizer.utils.SpUtils
-import com.ljf.eyepetizer.utils.SpUtils.Companion.KEY_CATEGORY_LIST
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -24,28 +23,41 @@ class HomeFragment : BaseFragment() {
     private lateinit var guideAdapter: HomeCategoryAdapter
     private lateinit var fragmentAdapter: HomeFragmentAdapter
 
-    private var categorys = ArrayList<Category>()
+    private var categories = ArrayList<Category>()
     private var fragments = ArrayList<BaseFragment>()
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
+        init()
         initData()
         initAdapter()
 
     }
 
-    private fun initData() {
-        var list = SpUtils.getList<List<Category>>(KEY_CATEGORY_LIST, object : TypeToken<List<Category>>() {}.type)
-        categorys.addAll(list)
+    private fun init() {
+        CategoryManager.addOnGetCategoryListener(object : CategoryManager.OnGetCategoryListener {
+            override fun onGetCatefoty(categories: List<Category>) {
+                initData()
+            }
+        })
+    }
 
-        fragments.add(DiscoveryFragment())
+    private fun initData() {
+        categories.addAll(CategoryManager.categories)
+        for (category in categories) {
+            var fragment = ContentFragment()
+            var bundle = Bundle()
+            bundle.putSerializable(ContentFragment.CATEGORY, category)
+            fragment.arguments = bundle
+            fragments.add(fragment)
+        }
     }
 
     private fun initAdapter() {
-        guideAdapter = HomeCategoryAdapter(context, categorys)
+        guideAdapter = HomeCategoryAdapter(context, categories)
         guideAdapter.onSelectPositionChangeListener = object : HomeCategoryAdapter.OnSelectPositionChangeListener {
             override fun onSelectPositionChange(position: Int) {
-                Toast.makeText(context, "" + position, Toast.LENGTH_LONG).show()
+                viewPager.currentItem = position
             }
 
         }
@@ -65,6 +77,19 @@ class HomeFragment : BaseFragment() {
         recyclerView.adapter = guideAdapter
 
         viewPager.adapter = fragmentAdapter
+        viewPager.currentItem = 1
+
+        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
+            override fun onPageScrollStateChanged(state: Int) {
+            }
+
+            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
+            }
+
+            override fun onPageSelected(position: Int) {
+                guideAdapter.selectPostition(position)
+            }
+        })
     }
 
 }
