@@ -53,7 +53,7 @@ class SpUtils {
         //https://segmentfault.com/q/1010000009644038
         //所以这里采用传递type的方式，否则会由于找不到类型，而序列化失败
         //从这一点看之前的JsonHelper就不会有这种问题
-        fun <T> getList(key: String, type: Type): T {
+        fun <T> getList(key: String, type: Type): T? {
             var value = getString(key, "")
             return gson.fromJson(value, type)
         }
