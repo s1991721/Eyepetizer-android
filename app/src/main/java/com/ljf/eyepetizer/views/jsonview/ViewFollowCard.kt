@@ -27,14 +27,18 @@ class ViewFollowCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
         var contentData = json.getJSONObject("content").getJSONObject("data")
         var header = json.getJSONObject("header")
 
-        GlideUtils.loadRoundImage(context,contentData.getJSONObject("cover").getString("feed"),coverIv,10)
+        GlideUtils.loadRoundImage(context, contentData.getJSONObject("cover").getString("feed"), coverIv, 10)
 
         durationTv.text = CommonUtils.secondsToMin(contentData.getInt("duration"))
 
-        GlideUtils.loadCircleImage(context,contentData.getJSONObject("author").getString("icon"),iconIv)
+        GlideUtils.loadCircleImage(context, contentData.getJSONObject("author").getString("icon"), iconIv)
 
         titleTv.text = contentData.getString("title")
 
-        descriptionTv.text = String.format("%s / %s", header.getString("title"), header.getString("description").split("/")[0])
+        if (header.getString("description").contains("收录于")) {
+            descriptionTv.text = String.format("%s / %s", header.getString("title"), header.getString("description").split("/")[0])
+        } else {
+            descriptionTv.text = header.getString("description")
+        }
     }
 }

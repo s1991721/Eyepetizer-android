@@ -62,6 +62,7 @@ class ContentFragment : BaseFragment() {
         Requester.getFragmentContent(category, object : Requester.OnResultListener<List<ViewData>> {
             override fun onResult(data: List<ViewData>?) {
                 if (data != null) {
+                    viewDatas.clear()
                     viewDatas.addAll(data)
                     adapter.notifyDataSetChanged()
                     recyclerView?.stopRefresh()

@@ -73,7 +73,7 @@
                 android:layout_marginTop="9dp"
                 android:paddingLeft="15dp"
                 android:paddingRight="15dp"
-                android:background="@color/c88000000"
+                android:background="@drawable/bg_round_translate"
                 android:gravity="center_vertical"
                 android:orientation="horizontal">
 

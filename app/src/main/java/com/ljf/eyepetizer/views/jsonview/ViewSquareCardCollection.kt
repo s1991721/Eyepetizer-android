@@ -1,10 +1,14 @@
 package com.ljf.eyepetizer.views.jsonview
 
 import android.content.Context
+import android.graphics.Typeface
+import android.text.TextUtils
 import android.util.AttributeSet
 import android.view.LayoutInflater
+import android.view.View
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.model.ViewData
+import com.ljf.eyepetizer.utils.CommonUtils
 import com.ljf.eyepetizer.utils.JsonViewUtils
 import kotlinx.android.synthetic.main.view_squarecardcollection.view.*
 
@@ -22,6 +26,25 @@ class ViewSquareCardCollection(context: Context, attrs: AttributeSet?, defStyleA
 
     override fun initView() {
         var json = data.json
+        var font = json.getJSONObject("header").getString("font")
+        when (font) {
+            "bigBold" -> {
+                titleTv.textSize = 27f
+            }
+            "bold" -> {
+                titleTv.textSize = 22f
+            }
+        }
+
+
+        var subtitle = json.getJSONObject("header").getString("subTitle")
+        if ("null" == (subtitle)) {
+            subtitleTv.visibility = View.GONE
+        } else {
+            subtitleTv.visibility = View.VISIBLE
+            subtitleTv.text = subtitle
+        }
+
         titleTv.text = json.getJSONObject("header").getString("title")
 
         var itemList = json.getJSONArray("itemList")

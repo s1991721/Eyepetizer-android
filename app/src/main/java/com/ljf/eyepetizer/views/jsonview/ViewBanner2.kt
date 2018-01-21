@@ -21,7 +21,7 @@ class ViewBanner2(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : B
         LayoutInflater.from(context).inflate(R.layout.view_banner2, this, true)
 
         layoutParams = LayoutParams(CommonUtils.dpTopx(330f), CommonUtils.dpTopx(190f))
-        iv.scaleType = ImageView.ScaleType.FIT_CENTER
+        iv.scaleType = ImageView.ScaleType.FIT_XY
     }
 
     override fun initView() {

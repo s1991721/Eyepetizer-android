@@ -6,6 +6,7 @@
     <LinearLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
+        android:layout_marginLeft="7dp"
         android:gravity="center"
         android:orientation="vertical"
         android:paddingTop="16dp">
@@ -49,13 +50,17 @@
                     android:id="@+id/titleTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="aaa" />
+                    android:text="aaa"
+                    android:textColor="@color/c444444"
+                    android:textSize="15sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/descriptionTv"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:text="aaa" />
+                    android:text="aaa"
+                    android:textColor="@color/c888888" />
 
             </LinearLayout>
 

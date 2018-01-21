@@ -10,11 +10,21 @@
         android:orientation="vertical">
 
         <TextView
+            android:id="@+id/subtitleTv"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_marginLeft="15dp"
+            android:layout_marginTop="7dp"
+            android:textColor="@color/c888888"
+            android:textStyle="bold" />
+
+        <TextView
             android:id="@+id/titleTv"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_marginLeft="15dp"
             android:drawablePadding="10dp"
+            android:textColor="@color/c333333"
             android:drawableRight="@mipmap/goto_icon"
             android:textSize="22sp"
             android:textStyle="bold" />
