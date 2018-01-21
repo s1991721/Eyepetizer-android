@@ -12,12 +12,7 @@ import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.Category
 import com.ljf.eyepetizer.model.ViewData
 import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView
-import kotlinx.android.synthetic.main.fragment_discovery.*
-import okhttp3.ResponseBody
-import org.json.JSONObject
-import retrofit2.Call
-import retrofit2.Callback
-import retrofit2.Response
+import kotlinx.android.synthetic.main.fragment_content.*
 
 /**
  * Created by mr.lin on 2018/1/20.
@@ -40,8 +35,7 @@ class ContentFragment : BaseFragment() {
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        var view = inflater?.inflate(R.layout.fragment_discovery, container, false)
-        return view
+        return inflater?.inflate(R.layout.fragment_content, container, false)
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -65,28 +59,15 @@ class ContentFragment : BaseFragment() {
     }
 
     fun initData() {
-        Requester.apiService().getTabDiscovery().enqueue(object : Callback<ResponseBody> {
-            override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>) {
-                toModel(response.body()!!.string())
-                adapter.notifyDataSetChanged()
-                if (recyclerView != null) {
-                    recyclerView.stopRefresh()
+        Requester.getFragmentContent(category, object : Requester.OnResultListener<List<ViewData>> {
+            override fun onResult(data: List<ViewData>?) {
+                if (data != null) {
+                    viewDatas.addAll(data)
+                    adapter.notifyDataSetChanged()
+                    recyclerView?.stopRefresh()
                 }
             }
-
-            override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
-            }
         })
-    }
-
-    fun toModel(string: String) {
-        var json = JSONObject(string)
-        var jsonArray = json.getJSONArray("itemList")
-        viewDatas.clear()
-        for (i in 0 until jsonArray.length()) {
-            var viewData = ViewData(jsonArray.getJSONObject(i))
-            viewDatas.add(viewData)
-        }
     }
 
 }

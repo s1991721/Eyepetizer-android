@@ -1,6 +1,14 @@
 package com.ljf.eyepetizer.http
 
+import com.ljf.eyepetizer.http.model.CategoryResult
+import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.model.ViewData
 import okhttp3.OkHttpClient
+import okhttp3.ResponseBody
+import org.json.JSONObject
+import retrofit2.Call
+import retrofit2.Callback
+import retrofit2.Response
 import retrofit2.Retrofit
 import retrofit2.adapter.rxjava.RxJavaCallAdapterFactory
 import retrofit2.converter.gson.GsonConverterFactory
@@ -13,7 +21,13 @@ class Requester {
 
     companion object {
 
+        private var services = HashMap<String, Any>()
+
         private fun <T> getService(baseUrl: String, service: Class<T>): T {
+
+            if (services.containsKey(service.simpleName)) {
+                return services[service.simpleName] as T
+            }
 
             val client = OkHttpClient.Builder()
                     .addInterceptor(LogInterceptor())
@@ -24,13 +38,57 @@ class Requester {
                     .addCallAdapterFactory(RxJavaCallAdapterFactory.create())
                     .client(client)
                     .build()
-            return retrofit.create(service)
+
+            var temp = retrofit.create(service)
+
+            services.put(service.simpleName, temp!!)
+
+            return temp
         }
 
         fun apiService(): ApiService {
             return getService(ApiService.baseUrl, ApiService::class.java)
         }
 
+        fun getCategories(onResultListener: OnResultListener<List<Category>>) {
+            apiService().getCategoryList().enqueue(object : Callback<CategoryResult> {
+                override fun onFailure(call: Call<CategoryResult>?, t: Throwable?) {
+                    onResultListener.onResult(null)
+                }
+
+                override fun onResponse(call: Call<CategoryResult>?, response: Response<CategoryResult>?) {
+                    onResultListener.onResult(response?.body()?.tabInfo?.tabList)
+                }
+            })
+        }
+
+        fun getFragmentContent(category: Category, onResultListener: OnResultListener<List<ViewData>>) {
+            apiService().getCategoryContent(category.apiUrl).enqueue(object : Callback<ResponseBody> {
+                override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
+                    onResultListener.onResult(null)
+                }
+
+                override fun onResponse(call: Call<ResponseBody>?, response: Response<ResponseBody>?) {
+                    onResultListener.onResult(toModel(response?.body()!!.string()))
+                }
+            })
+        }
+
+        private fun toModel(string: String): List<ViewData> {
+            var json = JSONObject(string)
+            var jsonArray = json.getJSONArray("itemList")
+            var viewDatas = ArrayList<ViewData>()
+            for (i in 0 until jsonArray.length()) {
+                var viewData = ViewData(jsonArray.getJSONObject(i))
+                viewDatas.add(viewData)
+            }
+            return viewDatas
+        }
+
+    }
+
+    interface OnResultListener<T> {
+        fun onResult(data: T?)
     }
 
 }
