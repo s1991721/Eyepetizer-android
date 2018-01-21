@@ -22,6 +22,7 @@ object CategoryManager {
                 override fun onResult(data: List<Category>?) {
                     if (data != null) {
                         categories.addAll(data)
+                        SpUtils.setList(SpUtils.KEY_CATEGORY_LIST, categories)
                         notifyOnGetCatefoty()
                     }
                 }
