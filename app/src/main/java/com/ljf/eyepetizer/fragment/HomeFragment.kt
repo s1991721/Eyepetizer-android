@@ -6,7 +6,6 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.HomeCategoryAdapter
 import com.ljf.eyepetizer.adapter.HomeFragmentAdapter
@@ -26,20 +25,20 @@ class HomeFragment : BaseFragment() {
     private var categories = ArrayList<Category>()
     private var fragments = ArrayList<BaseFragment>()
 
-    override fun onCreate(savedInstanceState: Bundle?) {
-        super.onCreate(savedInstanceState)
-        init()
-        initData()
-        initAdapter()
-
+    private var onGetCategoryListener = object : CategoryManager.OnGetCategoryListener {
+        override fun onGetCatefoty(categories: List<Category>) {
+            initData()
+            guideAdapter.notifyDataSetChanged()
+            fragmentAdapter.notifyDataSetChanged()
+            viewPager.currentItem = 1
+            recyclerView.scrollToPosition(1)
+        }
     }
 
-    private fun init() {
-        CategoryManager.addOnGetCategoryListener(object : CategoryManager.OnGetCategoryListener {
-            override fun onGetCatefoty(categories: List<Category>) {
-                initData()
-            }
-        })
+    override fun onCreate(savedInstanceState: Bundle?) {
+        super.onCreate(savedInstanceState)
+        initData()
+        initAdapter()
     }
 
     private fun initData() {
@@ -59,12 +58,12 @@ class HomeFragment : BaseFragment() {
             override fun onSelectPositionChange(position: Int) {
                 viewPager.currentItem = position
             }
-
         }
         fragmentAdapter = HomeFragmentAdapter(fragments, fragmentManager)
     }
 
     override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        CategoryManager.addOnGetCategoryListener(onGetCategoryListener)
         return inflater?.inflate(R.layout.fragment_home, container, false)
     }
 
@@ -88,8 +87,14 @@ class HomeFragment : BaseFragment() {
 
             override fun onPageSelected(position: Int) {
                 guideAdapter.selectPostition(position)
+                recyclerView.scrollToPosition(position)
             }
         })
+    }
+
+    override fun onDestroyView() {
+        CategoryManager.removeOnGetCategoryListener(onGetCategoryListener)
+        super.onDestroyView()
     }
 
 }
