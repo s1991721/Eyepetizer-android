@@ -1,16 +1,14 @@
 package com.ljf.eyepetizer.fragment
 
 import android.os.Bundle
-import android.support.v4.view.ViewPager
-import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ljf.eyepetizer.R
-import com.ljf.eyepetizer.adapter.HomeCategoryAdapter
 import com.ljf.eyepetizer.adapter.HomeFragmentAdapter
 import com.ljf.eyepetizer.manager.CategoryManager
 import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.views.GuideSlideView
 import kotlinx.android.synthetic.main.fragment_home.*
 
 /**
@@ -19,19 +17,22 @@ import kotlinx.android.synthetic.main.fragment_home.*
  */
 class HomeFragment : BaseFragment() {
 
-    private lateinit var guideAdapter: HomeCategoryAdapter
     private lateinit var fragmentAdapter: HomeFragmentAdapter
 
     private var categories = ArrayList<Category>()
     private var fragments = ArrayList<BaseFragment>()
+    private var indexStrings = ArrayList<String>()
 
-    private var onGetCategoryListener = object : CategoryManager.OnGetCategoryListener {
+    private val onGetCategoryListener = object : CategoryManager.OnGetCategoryListener {
         override fun onGetCatefoty(categories: List<Category>) {
             initData()
-            guideAdapter.notifyDataSetChanged()
             fragmentAdapter.notifyDataSetChanged()
-            viewPager.currentItem = 1
-            recyclerView.scrollToPosition(1)
+            guideslideview.setDatas(indexStrings)
+        }
+    }
+    private val onGuideSlideItemClickListener = object : GuideSlideView.OnGuideSlideItemClickListener {
+        override fun onItemClick(position: Int) {
+            viewPager.setCurrentItem(position, false)
         }
     }
 
@@ -49,16 +50,12 @@ class HomeFragment : BaseFragment() {
             bundle.putSerializable(ContentFragment.CATEGORY, category)
             fragment.arguments = bundle
             fragments.add(fragment)
+
+            indexStrings.add(category.name)
         }
     }
 
     private fun initAdapter() {
-        guideAdapter = HomeCategoryAdapter(context, categories)
-        guideAdapter.onSelectPositionChangeListener = object : HomeCategoryAdapter.OnSelectPositionChangeListener {
-            override fun onSelectPositionChange(position: Int) {
-                viewPager.currentItem = position
-            }
-        }
         fragmentAdapter = HomeFragmentAdapter(fragments, fragmentManager)
     }
 
@@ -70,26 +67,13 @@ class HomeFragment : BaseFragment() {
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
         super.onViewCreated(view, savedInstanceState)
 
-        var layoutManager = LinearLayoutManager(context)
-        layoutManager.orientation = LinearLayoutManager.HORIZONTAL
-        recyclerView.layoutManager = layoutManager
-        recyclerView.adapter = guideAdapter
-
         viewPager.adapter = fragmentAdapter
+
+        guideslideview.setViewPager(viewPager)
+        guideslideview.setDatas(indexStrings)
+        guideslideview.onGuideSlideItemClickListener = onGuideSlideItemClickListener
+
         viewPager.currentItem = 1
-
-        viewPager.addOnPageChangeListener(object : ViewPager.OnPageChangeListener {
-            override fun onPageScrollStateChanged(state: Int) {
-            }
-
-            override fun onPageScrolled(position: Int, positionOffset: Float, positionOffsetPixels: Int) {
-            }
-
-            override fun onPageSelected(position: Int) {
-                guideAdapter.selectPostition(position)
-                recyclerView.scrollToPosition(position)
-            }
-        })
     }
 
     override fun onDestroyView() {

@@ -17,7 +17,7 @@ object CategoryManager {
     init {
         var list = SpUtils.getList<List<Category>>(SpUtils.KEY_CATEGORY_LIST, object : TypeToken<List<Category>>() {}.type)
 
-        if (list == null || categories.isEmpty()) {
+        if (list == null || list.isEmpty()) {
             Requester.getCategories(object : Requester.OnResultListener<List<Category>> {
                 override fun onResult(data: List<Category>?) {
                     if (data != null) {
