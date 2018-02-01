@@ -8,7 +8,6 @@ import android.content.Context
 import android.util.AttributeSet
 import android.view.Gravity
 import android.view.LayoutInflater
-import android.view.animation.*
 import android.view.animation.Animation.INFINITE
 import android.widget.LinearLayout
 import com.ljf.eyepetizer.R
@@ -19,12 +18,12 @@ import kotlinx.android.synthetic.main.view_defaultheaderview.view.*
  * Created by mr.lin on 2018/1/15.
  * 默认HeaderView
  */
-class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : HeaderView(context, attrs, defStyleAttr) {
+class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : AttachView(context, attrs, defStyleAttr) {
 
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context) : this(context, null)
 
-    private var headerHeight = CommonUtils.dpTopx(50f)
+    private var headerHeight = viewHeight
 
     private lateinit var rotateAnimator1: ObjectAnimator
     private lateinit var rotateAnimator2: ObjectAnimator
@@ -37,31 +36,34 @@ class DefaultHeaderView(context: Context, attrs: AttributeSet?, defStyleAttr: In
     init {
         LayoutInflater.from(context).inflate(R.layout.view_defaultheaderview, this)
 
-        var params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0)
+        val params = LinearLayout.LayoutParams(LayoutParams.MATCH_PARENT, 0)
         params.gravity = Gravity.CENTER
         layoutParams = params
     }
 
     override fun setVisibleHeight(height: Float) {
-        var params = layoutParams
+        if (height > viewHeight * 3) {
+            return
+        }
+        val params = layoutParams
         params.height = height.toInt()
         layoutParams = params
     }
 
-    override fun isEnoughtToRefresh(): Boolean {
-        var currentHeight = layoutParams.height
+    override fun isEnought(): Boolean {
+        val currentHeight = layoutParams.height
         return currentHeight >= headerHeight / 2
     }
 
-    override fun startRefresh() {
+    override fun start() {
         changeHeight(layoutParams.height, headerHeight, {}, { startRotate() })
     }
 
-    override fun endRefresh() {
+    override fun end() {
         changeHeight(layoutParams.height, 0, { stopRotate() }, {})
     }
 
-    override fun cancelRefresh() {
+    override fun cancel() {
         changeHeight(layoutParams.height, 0, {}, {})
     }
 

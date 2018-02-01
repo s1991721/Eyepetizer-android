@@ -17,17 +17,18 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     constructor(context: Context, attrs: AttributeSet?) : this(context, attrs, 0)
     constructor(context: Context) : this(context, null)
 
-    private var headerView: HeaderView
+    private var headerView: AttachView
     private var recyclerView = RecyclerView(context)
-    private var footerView: FooterView
+    private var footerView: AttachView
 
     var delay = 2000L
 
     companion object {
         val STATE_NORMAL = 0
-        val STATE_PULLING = 1
+        val STATE_DROP_DOWN = 1
         val STATE_REFRESHING = 2
-        val STATE_LOADING = 3
+        val STATE_DROP_UP = 3
+        val STATE_LOADING = 4
     }
 
     var currentState = STATE_NORMAL
@@ -43,9 +44,18 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         addView(recyclerView, 1)
         addView(footerView)
 
+        recyclerView.overScrollMode = OVER_SCROLL_NEVER
+
+        footerView.onAttachViewHeightChangeListener = object : AttachView.OnAttachViewHeightChangeListener {
+            override fun onHeightChange(height: Int) {
+                scrollTo(0, height)
+            }
+        }
+
     }
 
     var startY = 0f
+    var lastY = 0f
 
     var onRefreshListener: OnRefreshListener? = null
     var onLoadMoreListener: OnLoadMoreListener? = null
@@ -63,7 +73,7 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 MotionEvent.ACTION_MOVE -> {
                     if (currentState != STATE_REFRESHING) {
                         if (ev.y - startY > 0) {
-                            changeState(STATE_PULLING)
+                            changeState(STATE_DROP_DOWN)
                             headerView.setVisibleHeight(ev.y - startY)
                             return true
                         }
@@ -72,9 +82,9 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 }
 
                 MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
-                    if (currentState == STATE_PULLING) {
+                    if (currentState == STATE_DROP_DOWN) {
                         var toState = STATE_NORMAL
-                        if (headerView.isEnoughtToRefresh()) {
+                        if (headerView.isEnought()) {
                             toState = STATE_REFRESHING
                         }
                         changeState(toState)
@@ -87,11 +97,81 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         if (isScrollToBottom()) {
 
             Logger.i("RefreshRecyclerView", "ScrollToBottom")
-            changeState(STATE_LOADING)
+            when (ev.action) {
 
+                MotionEvent.ACTION_DOWN -> {
+                    startY = ev.y
+                }
+
+                MotionEvent.ACTION_MOVE -> {
+                    if (currentState != STATE_LOADING) {
+                        val offset = startY - ev.y
+                        if (offset > 0) {
+                            changeState(STATE_DROP_UP)
+                            footerView.setVisibleHeight(offset)
+                            lastY = offset
+                            return true
+                        }
+                        changeState(STATE_NORMAL)
+                    }
+                }
+
+                MotionEvent.ACTION_UP, MotionEvent.ACTION_CANCEL -> {
+                    lastY = 0f
+                    if (currentState == STATE_DROP_UP) {
+                        var toState = STATE_NORMAL
+                        if (footerView.isEnought()) {
+                            toState = STATE_LOADING
+                        }
+                        changeState(toState)
+                    }
+                }
+
+            }
         }
 
         return super.dispatchTouchEvent(ev)
+    }
+
+    private fun changeState(state: Int) {
+        when (currentState) {
+            STATE_NORMAL -> {
+                if (state == STATE_REFRESHING) {
+                    notifyRefresh()
+                }
+                if (state == STATE_LOADING) {
+                    notifyLoadMore()
+                }
+            }
+            STATE_DROP_DOWN -> {
+                if (state == STATE_REFRESHING) {
+                    notifyRefresh()
+                }
+                if (state == STATE_NORMAL) {
+                    notifyRefreshCancel()
+                }
+            }
+            STATE_REFRESHING -> {
+                if (state == STATE_NORMAL) {
+                    notifyRefreshEnd()
+                }
+            }
+            STATE_DROP_UP -> {
+                if (state == STATE_LOADING) {
+                    notifyLoadMore()
+                }
+                if (state == STATE_NORMAL) {
+                    notifyLoadMoreCancel()
+                }
+            }
+            STATE_LOADING -> {
+                if (state == STATE_NORMAL) {
+                    notifyLoadMoreEnd()
+                }
+            }
+
+        }
+        currentState = state
     }
 
     //刷新操作
@@ -105,66 +185,35 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         return firstVisiableChildView.top == 0
     }
 
-    private fun changeState(state: Int) {
-        when (currentState) {
-            STATE_NORMAL -> {
-                if (state == STATE_REFRESHING) {
-                    notifyRefresh()
-                }
-                if (state == STATE_LOADING) {
-                    notifyLoadMore()
-                }
-                currentState = state
-            }
-            STATE_PULLING -> {
-                if (state == STATE_REFRESHING) {
-                    notifyRefresh()
-                }
-                if (state == STATE_NORMAL) {
-                    notifyRefreshCancel()
-                }
-                currentState = state
-            }
-            STATE_REFRESHING -> {
-                if (state == STATE_NORMAL) {
-                    notifyRefreshEnd()
-                }
-                currentState = state
-            }
-            STATE_LOADING -> {
-                if (state == STATE_NORMAL) {
-                    notifyLoadMoreEnd()
-                }
-                currentState = state
-            }
-
-        }
-    }
-
     private fun notifyRefresh() {
         postDelayed({ onRefreshListener?.onRefresh() }, delay)
-        headerView.startRefresh()
+        headerView.start()
     }
 
     private fun notifyRefreshEnd() {
-        headerView.endRefresh()
+        headerView.end()
     }
 
     private fun notifyRefreshCancel() {
-        headerView.cancelRefresh()
+        headerView.cancel()
     }
 
     //更多操作
-    fun isScrollToBottom(): Boolean {
+    private fun isScrollToBottom(): Boolean {
         return recyclerView.computeVerticalScrollExtent() + recyclerView.computeVerticalScrollOffset() >= recyclerView.computeVerticalScrollRange()
     }
 
-    fun notifyLoadMore() {
-        onLoadMoreListener?.onLoadMore()
+    private fun notifyLoadMore() {
+        postDelayed({ onLoadMoreListener?.onLoadMore() }, delay)
+        footerView.start()
     }
 
-    fun notifyLoadMoreEnd() {
+    private fun notifyLoadMoreEnd() {
+        footerView.end()
+    }
 
+    private fun notifyLoadMoreCancel() {
+        footerView.cancel()
     }
 
     //对外使用
@@ -176,12 +225,12 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
         recyclerView.adapter = adapter
     }
 
-    fun setHeaderView(view: HeaderView) {
+    fun setHeaderView(view: AttachView) {
         headerView = view
         invalidate()
     }
 
-    fun setFooterView(view: FooterView) {
+    fun setFooterView(view: AttachView) {
         footerView = view
         invalidate()
     }
