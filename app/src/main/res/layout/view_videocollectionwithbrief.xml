@@ -35,7 +35,8 @@
                     android:layout_height="wrap_content"
                     android:text="aaa"
                     android:textColor="@color/c444444"
-                    android:textSize="13sp" />
+                    android:textSize="13sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/descriptionTv"
