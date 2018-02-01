@@ -41,13 +41,14 @@ class DefaultFooterView(context: Context, attrs: AttributeSet?, defStyleAttr: In
     }
 
     override fun setVisibleHeight(height: Float) {
-        if (height > viewHeight * 3) {
-            return
+        var offset = height
+        if (offset > width) {
+            offset = width.toFloat()
         }
         val params = layoutParams
-        params.height = height.toInt()
+        params.height = (offset * 0.4).toInt()//阻尼
         layoutParams = params
-        onAttachViewHeightChangeListener?.onHeightChange(Math.round(height))
+        onAttachViewHeightChangeListener?.onHeightChange((offset * 0.4).toInt())
     }
 
     override fun isEnought(): Boolean {

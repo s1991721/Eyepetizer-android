@@ -67,14 +67,14 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
             when (ev.action) {
 
                 MotionEvent.ACTION_DOWN -> {
-                    startY = ev.y
+                    startY = ev.rawY
                 }
 
                 MotionEvent.ACTION_MOVE -> {
                     if (currentState != STATE_REFRESHING) {
-                        if (ev.y - startY > 0) {
+                        if (ev.rawY - startY > 0) {
                             changeState(STATE_DROP_DOWN)
-                            headerView.setVisibleHeight(ev.y - startY)
+                            headerView.setVisibleHeight(ev.rawY - startY)
                             return true
                         }
                         changeState(STATE_NORMAL)
@@ -100,12 +100,12 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
             when (ev.action) {
 
                 MotionEvent.ACTION_DOWN -> {
-                    startY = ev.y
+                    startY = ev.rawY
                 }
 
                 MotionEvent.ACTION_MOVE -> {
                     if (currentState != STATE_LOADING) {
-                        val offset = startY - ev.y
+                        val offset = startY - ev.rawY
                         if (offset > 0) {
                             changeState(STATE_DROP_UP)
                             footerView.setVisibleHeight(offset)
