@@ -45,8 +45,8 @@ class HomeFragment : BaseFragment() {
     private fun initData() {
         categories.addAll(CategoryManager.categories)
         for (category in categories) {
-            var fragment = ContentFragment()
-            var bundle = Bundle()
+            val fragment = ContentFragment()
+            val bundle = Bundle()
             bundle.putSerializable(ContentFragment.CATEGORY, category)
             fragment.arguments = bundle
             fragments.add(fragment)
