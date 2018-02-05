@@ -22,11 +22,11 @@ class ViewHorizontalScrollCard(context: Context, attrs: AttributeSet?, defStyleA
 
     override fun initView() {
         var json = data.json
-        val jsonArray = json.getJSONArray("itemList")
+        val jsonArray = json.optJSONArray("itemList")
         //多次调用view会重复
         linearLayout.removeAllViews()
         for (i in 0 until jsonArray.length()) {
-            val jsonObject = jsonArray.getJSONObject(i)
+            val jsonObject = jsonArray.optJSONObject(i)
             var view = JsonViewUtils.viewDataToView(context, ViewData(jsonObject))
             if (view != null) {
                 linearLayout.addView(view)

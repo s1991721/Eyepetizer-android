@@ -26,7 +26,7 @@ class ViewSquareCardCollection(context: Context, attrs: AttributeSet?, defStyleA
 
     override fun initView() {
         var json = data.json
-        var font = json.getJSONObject("header").getString("font")
+        var font = json.optJSONObject("header").optString("font")
         when (font) {
             "bigBold" -> {
                 titleTv.textSize = 27f
@@ -37,7 +37,7 @@ class ViewSquareCardCollection(context: Context, attrs: AttributeSet?, defStyleA
         }
 
 
-        var subtitle = json.getJSONObject("header").getString("subTitle")
+        var subtitle = json.optJSONObject("header").optString("subTitle")
         if ("null" == (subtitle)) {
             subtitleTv.visibility = View.GONE
         } else {
@@ -45,12 +45,12 @@ class ViewSquareCardCollection(context: Context, attrs: AttributeSet?, defStyleA
             subtitleTv.text = subtitle
         }
 
-        titleTv.text = json.getJSONObject("header").getString("title")
+        titleTv.text = json.optJSONObject("header").optString("title")
 
-        var itemList = json.getJSONArray("itemList")
+        var itemList = json.optJSONArray("itemList")
         containerLl.removeAllViews()
         for (i in 0 until itemList.length()) {
-            var viewData = ViewData(itemList.getJSONObject(i))
+            var viewData = ViewData(itemList.optJSONObject(i))
             containerLl.addView(JsonViewUtils.viewDataToView(context, viewData))
         }
     }

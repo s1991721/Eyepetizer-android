@@ -25,7 +25,7 @@ class ViewBanner2(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : B
     }
 
     override fun initView() {
-        val url = data.json.getString("image")
+        val url = data.json.optString("image")
 
         GlideUtils.loadRoundImage(context, url, iv, 10)
     }

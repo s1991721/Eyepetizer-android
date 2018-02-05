@@ -23,10 +23,10 @@ class ViewBriefCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) :
     override fun initView() {
         var json = data.json
 
-        GlideUtils.loadRoundImage(context, json.getString("icon"), iconIv, 5)
+        GlideUtils.loadRoundImage(context, json.optString("icon"), iconIv, 5)
 
-        titleTv.text = json.getString("title")
+        titleTv.text = json.optString("title")
 
-        descriptionTv.text = json.getString("description")
+        descriptionTv.text = json.optString("description")
     }
 }

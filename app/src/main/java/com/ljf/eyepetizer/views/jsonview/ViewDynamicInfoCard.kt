@@ -24,26 +24,26 @@ class ViewDynamicInfoCard(context: Context, attrs: AttributeSet?, defStyleAttr: 
     override fun initView() {
         var json = data.json
 
-        var user = json.getJSONObject("user")
-        var reply = json.getJSONObject("reply")
-        var simpleVideo = json.getJSONObject("simpleVideo")
+        var user = json.optJSONObject("user")
+        var reply = json.optJSONObject("reply")
+        var simpleVideo = json.optJSONObject("simpleVideo")
 
-        GlideUtils.loadCircleImage(context, user.getString("avatar"), avatarIv)
+        GlideUtils.loadCircleImage(context, user.optString("avatar"), avatarIv)
 
-        nicknameTv.text = user.getString("nickname")
+        nicknameTv.text = user.optString("nickname")
 
-        textTv.text = json.getString("text")
+        textTv.text = json.optString("text")
 
-        messageTv.text = reply.getString("message")
+        messageTv.text = reply.optString("message")
 
-        GlideUtils.loadImage(context, simpleVideo.getJSONObject("cover").getString("feed"), coverIv)
+        GlideUtils.loadImage(context, simpleVideo.optJSONObject("cover").optString("feed"), coverIv)
 
-        titleTv.text = simpleVideo.getString("title")
+        titleTv.text = simpleVideo.optString("title")
 
-        categoryTv.text = simpleVideo.getString("category")
+        categoryTv.text = simpleVideo.optString("category")
 
-        likecountTv.text = String.format("%s %s", context.getString(R.string.fabulous), reply.getString("likeCount"))
+        likecountTv.text = String.format("%s %s", context.getString(R.string.fabulous), reply.optString("likeCount"))
 
-        createdateTv.text = CommonUtils.showCurrentTime(json.getString("createDate").toLong())
+        createdateTv.text = CommonUtils.showCurrentTime(json.optString("createDate").toLong())
     }
 }

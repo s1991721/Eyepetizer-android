@@ -25,13 +25,13 @@ class ViewVideoSmallCard(context: Context, attrs: AttributeSet?, defStyleAttr: I
     override fun initView() {
         var json = data.json
 
-        GlideUtils.loadRoundImage(context, json.getJSONObject("cover").getString("feed"), coverIv, 5)
+        GlideUtils.loadRoundImage(context, json.optJSONObject("cover").optString("feed"), coverIv, 5)
 
-        durationTv.text = CommonUtils.secondsToMin(json.getString("duration").toInt())
+        durationTv.text = CommonUtils.secondsToMin(json.optString("duration").toInt())
 
-        titleTv.text = json.getString("title")
+        titleTv.text = json.optString("title")
 
-        descriptionTv.text = String.format("#%s / %s", json.getString("category"), context.getString(R.string.quality_selected))
+        descriptionTv.text = String.format("#%s / %s", json.optString("category"), context.getString(R.string.quality_selected))
     }
 
 

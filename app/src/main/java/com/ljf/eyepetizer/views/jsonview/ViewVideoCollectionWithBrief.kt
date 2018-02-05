@@ -25,18 +25,18 @@ class ViewVideoCollectionWithBrief(context: Context, attrs: AttributeSet?, defSt
     override fun initView() {
         var json = data.json
 
-        var header = json.getJSONObject("header")
+        var header = json.optJSONObject("header")
 
-        GlideUtils.loadCircleImage(context,header.getString("icon"),iconIv)
+        GlideUtils.loadCircleImage(context,header.optString("icon"),iconIv)
 
-        titleTv.text = header.getString("title")
+        titleTv.text = header.optString("title")
 
-        descriptionTv.text = header.getString("description")
+        descriptionTv.text = header.optString("description")
 
-        var itemList = json.getJSONArray("itemList")
+        var itemList = json.optJSONArray("itemList")
         containerLl.removeAllViews()
         for (i in 0 until itemList.length()) {
-            var viewData = ViewData(itemList.getJSONObject(i))
+            var viewData = ViewData(itemList.optJSONObject(i))
             containerLl.addView(JsonViewUtils.viewDataToView(context, viewData))
         }
     }

@@ -27,7 +27,7 @@ class ViewTextCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
     override fun initView() {
         var json = data.json
 
-        when (json.getString("type")) {
+        when (json.optString("type")) {
 
             "header5" -> {
                 tv.textSize = 20f
@@ -37,7 +37,7 @@ class ViewTextCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
 
                 tv.gravity = Gravity.LEFT or Gravity.CENTER_VERTICAL
 
-                if ("null" != (json.getString("actionUrl"))) {
+                if ("null" != (json.optString("actionUrl"))) {
                     var drawable = ContextCompat.getDrawable(context, R.mipmap.goto_icon)
                     drawable.setBounds(0, 0, drawable.minimumWidth, drawable.minimumHeight)
                     tv.setCompoundDrawables(null, null, drawable, null)
@@ -62,7 +62,7 @@ class ViewTextCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : 
 
         }
 
-        tv.text = json.getString("text")
+        tv.text = json.optString("text")
     }
 
 }

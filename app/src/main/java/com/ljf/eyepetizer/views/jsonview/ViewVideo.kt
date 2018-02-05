@@ -24,13 +24,13 @@ class ViewVideo(context: Context, attrs: AttributeSet?, defStyleAttr: Int) : Bas
     override fun initView() {
         var json = data.json
 
-        GlideUtils.loadRoundImage(context,json.getJSONObject("cover").getString("feed"),coverIv,10)
+        GlideUtils.loadRoundImage(context,json.optJSONObject("cover").optString("feed"),coverIv,10)
 
-        durationTv.text = CommonUtils.secondsToMin(json.getInt("duration"))
+        durationTv.text = CommonUtils.secondsToMin(json.optInt("duration"))
 
-        descriptionTv.text = json.getString("title")
+        descriptionTv.text = json.optString("title")
 
-        categoryTv.text = String.format("# %s", json.getString("category"))
+        categoryTv.text = String.format("# %s", json.optString("category"))
     }
 
 }

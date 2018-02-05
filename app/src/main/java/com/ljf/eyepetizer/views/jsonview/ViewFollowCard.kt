@@ -24,21 +24,21 @@ class ViewFollowCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
     override fun initView() {
         var json = data.json
-        var contentData = json.getJSONObject("content").getJSONObject("data")
-        var header = json.getJSONObject("header")
+        var contentData = json.optJSONObject("content").optJSONObject("data")
+        var header = json.optJSONObject("header")
 
-        GlideUtils.loadRoundImage(context, contentData.getJSONObject("cover").getString("feed"), coverIv, 10)
+        GlideUtils.loadRoundImage(context, contentData.optJSONObject("cover").optString("feed"), coverIv, 10)
 
-        durationTv.text = CommonUtils.secondsToMin(contentData.getInt("duration"))
+        durationTv.text = CommonUtils.secondsToMin(contentData.optInt("duration"))
 
-        GlideUtils.loadCircleImage(context, contentData.getJSONObject("author").getString("icon"), iconIv)
+        GlideUtils.loadCircleImage(context, contentData.optJSONObject("author").optString("icon"), iconIv)
 
-        titleTv.text = contentData.getString("title")
+        titleTv.text = contentData.optString("title")
 
-        if (header.getString("description").contains("收录于")) {
-            descriptionTv.text = String.format("%s / %s", header.getString("title"), header.getString("description").split("/")[0])
+        if (header.optString("description").contains("收录于")) {
+            descriptionTv.text = String.format("%s / %s", header.optString("title"), header.optString("description").split("/")[0])
         } else {
-            descriptionTv.text = header.getString("description")
+            descriptionTv.text = header.optString("description")
         }
     }
 }
