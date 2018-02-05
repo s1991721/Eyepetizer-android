@@ -60,6 +60,8 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
     var onRefreshListener: OnRefreshListener? = null
     var onLoadMoreListener: OnLoadMoreListener? = null
 
+    var loadEnable = true
+
     override fun dispatchTouchEvent(ev: MotionEvent): Boolean {
         if (isScrollToTop()) {
 
@@ -104,7 +106,7 @@ class RefreshRecyclerView(context: Context, attrs: AttributeSet?, defStyle: Int)
                 }
 
                 MotionEvent.ACTION_MOVE -> {
-                    if (currentState != STATE_LOADING) {
+                    if (currentState != STATE_LOADING && loadEnable) {
                         val offset = startY - ev.rawY
                         if (offset > 0) {
                             changeState(STATE_DROP_UP)

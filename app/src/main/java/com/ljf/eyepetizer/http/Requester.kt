@@ -2,6 +2,7 @@ package com.ljf.eyepetizer.http
 
 import com.ljf.eyepetizer.http.model.CategoryResult
 import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.model.FragmentContent
 import com.ljf.eyepetizer.model.ViewData
 import okhttp3.OkHttpClient
 import okhttp3.ResponseBody
@@ -62,8 +63,8 @@ class Requester {
             })
         }
 
-        fun getFragmentContent(category: Category, onResultListener: OnResultListener<List<ViewData>>) {
-            apiService().getCategoryContent(category.apiUrl).enqueue(object : Callback<ResponseBody> {
+        fun getFragmentContent(url: String, onResultListener: OnResultListener<FragmentContent>) {
+            apiService().getCategoryContent(url).enqueue(object : Callback<ResponseBody> {
                 override fun onFailure(call: Call<ResponseBody>?, t: Throwable?) {
                     onResultListener.onResult(null)
                 }
@@ -74,15 +75,16 @@ class Requester {
             })
         }
 
-        private fun toModel(string: String): List<ViewData> {
-            var json = JSONObject(string)
-            var jsonArray = json.getJSONArray("itemList")
-            var viewDatas = ArrayList<ViewData>()
+        private fun toModel(string: String): FragmentContent {
+            val json = JSONObject(string)
+            val jsonArray = json.getJSONArray("itemList")
+            val viewDatas = ArrayList<ViewData>()
             for (i in 0 until jsonArray.length()) {
-                var viewData = ViewData(jsonArray.getJSONObject(i))
+                val viewData = ViewData(jsonArray.getJSONObject(i))
                 viewDatas.add(viewData)
             }
-            return viewDatas
+
+            return FragmentContent(json.getString("nextPageUrl"), viewDatas)
         }
 
     }

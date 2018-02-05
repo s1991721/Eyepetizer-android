@@ -3,6 +3,7 @@ package com.ljf.eyepetizer.utils
 import android.content.Context
 import android.view.View
 import com.ljf.eyepetizer.model.ViewData
+import com.ljf.eyepetizer.views.ViewEnd
 import com.ljf.eyepetizer.views.jsonview.*
 
 /**
@@ -23,6 +24,9 @@ class JsonViewUtils {
         val TYPE_VIDEOCOLLECTIONWITHBRIEF = 8
         val TYPE_VIDEO = 9
         val TYPE_DYNAMICINFOCARD = 10
+        val TYPE_BANNER = 11
+
+        val TYPE_END = 12
 
         fun viewDataToView(context: Context, viewData: ViewData): View? {
             var view: BaseJsonView? = null
@@ -37,6 +41,8 @@ class JsonViewUtils {
                 "videoCollectionWithBrief" -> view = ViewVideoCollectionWithBrief(context)
                 "video" -> view = ViewVideo(context)
                 "DynamicInfoCard" -> view = ViewDynamicInfoCard(context)
+                "banner" -> view = ViewBanner(context)
+                "end" -> view = ViewEnd(context)
             }
             if (view != null) {
                 injectView(view, viewData)
@@ -56,6 +62,8 @@ class JsonViewUtils {
                 "videoCollectionWithBrief" -> return TYPE_VIDEOCOLLECTIONWITHBRIEF
                 "video" -> return TYPE_VIDEO
                 "DynamicInfoCard" -> return TYPE_DYNAMICINFOCARD
+                "banner" -> return TYPE_BANNER
+                "end" -> return TYPE_END
             }
             return -1
         }
@@ -72,6 +80,8 @@ class JsonViewUtils {
                 TYPE_VIDEOCOLLECTIONWITHBRIEF -> return ViewVideoCollectionWithBrief(context)
                 TYPE_VIDEO -> return ViewVideo(context)
                 TYPE_DYNAMICINFOCARD -> return ViewDynamicInfoCard(context)
+                TYPE_BANNER -> return ViewBanner(context)
+                TYPE_END -> return ViewEnd(context)
             }
             return null
         }

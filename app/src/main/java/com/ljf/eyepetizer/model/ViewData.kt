@@ -7,6 +7,9 @@ import org.json.JSONObject
  * 控件数据
  */
 data class ViewData(private var jsonObject: JSONObject) {
+
+    constructor(type: String) : this(JSONObject("{\"type\": \"${type}\", \"data\": \"{}\"}"))
+
     var type = jsonObject.getString("type")
-    var json = jsonObject.getJSONObject("data")
+    var json = jsonObject.optJSONObject("data")
 }

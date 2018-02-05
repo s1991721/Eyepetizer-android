@@ -5,11 +5,11 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
-import android.widget.Toast
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.JsonViewAdapter
 import com.ljf.eyepetizer.http.Requester
 import com.ljf.eyepetizer.model.Category
+import com.ljf.eyepetizer.model.FragmentContent
 import com.ljf.eyepetizer.model.ViewData
 import com.ljf.eyepetizer.views.refreshview.RefreshRecyclerView
 import kotlinx.android.synthetic.main.fragment_content.*
@@ -28,6 +28,8 @@ class ContentFragment : BaseFragment() {
     lateinit var adapter: JsonViewAdapter
     lateinit var category: Category
 
+    private lateinit var fragmentContent: FragmentContent
+
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
         category = arguments.getSerializable(CATEGORY) as Category
@@ -44,13 +46,13 @@ class ContentFragment : BaseFragment() {
         recyclerView.setAdapter(adapter)
         recyclerView.onRefreshListener = object : RefreshRecyclerView.OnRefreshListener {
             override fun onRefresh() {
-                initData()
+                viewDatas.clear()
+                getDatas(category.apiUrl)
             }
         }
         recyclerView.onLoadMoreListener = object : RefreshRecyclerView.OnLoadMoreListener {
             override fun onLoadMore() {
-                Toast.makeText(context, "load more", Toast.LENGTH_LONG).show()
-                recyclerView.postDelayed({ recyclerView.stopLoadMore() }, 3000)
+                recyclerView.postDelayed({ getDatas(fragmentContent.nextPageUrl) }, 3000)
             }
         }
         if (viewDatas.size == 0) {
@@ -58,17 +60,27 @@ class ContentFragment : BaseFragment() {
         }
     }
 
-    fun initData() {
-        Requester.getFragmentContent(category, object : Requester.OnResultListener<List<ViewData>> {
-            override fun onResult(data: List<ViewData>?) {
+    fun getDatas(url: String) {
+        Requester.getFragmentContent(url, object : Requester.OnResultListener<FragmentContent> {
+            override fun onResult(data: FragmentContent?) {
                 if (data != null) {
-                    viewDatas.clear()
-                    viewDatas.addAll(data)
-                    adapter.notifyDataSetChanged()
-                    recyclerView?.stopRefresh()
+                    fragmentContent = data.copy()
+                    showData()
                 }
             }
         })
+    }
+
+    fun showData() {
+        viewDatas.addAll(fragmentContent.itemList)
+
+        if (fragmentContent.nextPageUrl == "null") {
+            viewDatas.add(ViewData("end"))
+            recyclerView?.loadEnable = false
+        }
+
+        adapter.notifyDataSetChanged()
+        recyclerView?.stopRefresh()
     }
 
 }
