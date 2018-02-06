@@ -76,6 +76,7 @@ class HomeFragment : BaseFragment() {
         guideslideview.onGuideSlideItemClickListener = onGuideSlideItemClickListener
 
         viewPager.currentItem = 1
+        viewPager.offscreenPageLimit=3
 
         categoryIv.setOnClickListener { startActivity(Intent(context, CategoryActivity::class.java)) }
     }

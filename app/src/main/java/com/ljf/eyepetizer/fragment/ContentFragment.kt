@@ -5,6 +5,7 @@ import android.support.v7.widget.LinearLayoutManager
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
+import com.bumptech.glide.Glide
 import com.ljf.eyepetizer.R
 import com.ljf.eyepetizer.adapter.JsonViewAdapter
 import com.ljf.eyepetizer.http.Requester
@@ -29,6 +30,7 @@ class ContentFragment : BaseFragment() {
     lateinit var category: Category
 
     private lateinit var fragmentContent: FragmentContent
+    private var rootView: View? = null
 
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
@@ -36,8 +38,11 @@ class ContentFragment : BaseFragment() {
         adapter = JsonViewAdapter(context, viewDatas)
     }
 
-    override fun onCreateView(inflater: LayoutInflater?, container: ViewGroup?, savedInstanceState: Bundle?): View? {
-        return inflater?.inflate(R.layout.fragment_content, container, false)
+    override fun onCreateView(inflater: LayoutInflater, container: ViewGroup?, savedInstanceState: Bundle?): View? {
+        if (rootView == null) {
+            rootView = inflater.inflate(R.layout.fragment_content, container, false)
+        }
+        return rootView
     }
 
     override fun onViewCreated(view: View?, savedInstanceState: Bundle?) {
@@ -58,6 +63,7 @@ class ContentFragment : BaseFragment() {
         if (viewDatas.size == 0) {
             recyclerView.startRefresh()
         }
+
     }
 
     fun getDatas(url: String) {
@@ -81,6 +87,12 @@ class ContentFragment : BaseFragment() {
 
         adapter.notifyDataSetChanged()
         recyclerView?.stopRefresh()
+    }
+
+    override fun onDestroyView() {
+        Glide.get(context).clearMemory()
+        System.gc()
+        super.onDestroyView()
     }
 
 }

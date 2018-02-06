@@ -19,9 +19,9 @@ class GlideRoundTransform(context: Context, private var radius: Int) : BitmapTra
     }
 
     private fun roundCrop(pool: BitmapPool, source: Bitmap): Bitmap {
-        var result = pool.get(source.width, source.height, Bitmap.Config.ARGB_8888)
+        var result = pool.get(source.width, source.height, Bitmap.Config.RGB_565)
         if (result == null) {
-            result = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.ARGB_8888)
+            result = Bitmap.createBitmap(source.width, source.height, Bitmap.Config.RGB_565)
         }
 
         val canvas = Canvas(result)

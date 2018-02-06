@@ -31,7 +31,9 @@ class ViewFollowCard(context: Context, attrs: AttributeSet?, defStyleAttr: Int) 
 
         durationTv.text = CommonUtils.secondsToMin(contentData.optInt("duration"))
 
-        GlideUtils.loadCircleImage(context, contentData.optJSONObject("author").optString("icon"), iconIv)
+        if (contentData.optJSONObject("author") != null) {
+            GlideUtils.loadCircleImage(context, contentData.optJSONObject("author").optString("icon"), iconIv)
+        }
 
         titleTv.text = contentData.optString("title")
 

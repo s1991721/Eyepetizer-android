@@ -24,9 +24,9 @@ class GlideCircleTransform(context: Context?) : BitmapTransformation(context) {
 
         val squared = Bitmap.createBitmap(source, x, y, size, size)
 
-        var result = pool.get(size, size, Bitmap.Config.ARGB_8888)
+        var result = pool.get(size, size, Bitmap.Config.RGB_565)
         if (result == null) {
-            result = Bitmap.createBitmap(size, size, Bitmap.Config.ARGB_8888)
+            result = Bitmap.createBitmap(size, size, Bitmap.Config.RGB_565)
         }
 
         val canvas = Canvas(result)
