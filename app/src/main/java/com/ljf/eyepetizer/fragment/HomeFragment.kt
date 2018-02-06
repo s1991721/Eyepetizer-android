@@ -1,10 +1,12 @@
 package com.ljf.eyepetizer.fragment
 
+import android.content.Intent
 import android.os.Bundle
 import android.view.LayoutInflater
 import android.view.View
 import android.view.ViewGroup
 import com.ljf.eyepetizer.R
+import com.ljf.eyepetizer.activity.CategoryActivity
 import com.ljf.eyepetizer.adapter.HomeFragmentAdapter
 import com.ljf.eyepetizer.manager.CategoryManager
 import com.ljf.eyepetizer.model.Category
@@ -74,6 +76,8 @@ class HomeFragment : BaseFragment() {
         guideslideview.onGuideSlideItemClickListener = onGuideSlideItemClickListener
 
         viewPager.currentItem = 1
+
+        categoryIv.setOnClickListener { startActivity(Intent(context, CategoryActivity::class.java)) }
     }
 
     override fun onDestroyView() {
